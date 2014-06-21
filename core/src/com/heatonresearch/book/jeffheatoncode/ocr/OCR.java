@@ -495,8 +495,7 @@ public class OCR extends JFrame implements Runnable {
 		for (int i = 0; i < this.letterListModel.size(); i++) {
 			final double input[] = new double[5 * 7];
 			int idx = 0;
-			final SampleData ds = (SampleData) this.letterListModel
-					.getElementAt(i);
+			final SampleData ds = (SampleData) this.letterListModel.getElementAt(i);
 			for (int y = 0; y < ds.getHeight(); y++) {
 				for (int x = 0; x < ds.getWidth(); x++) {
 					input[idx++] = ds.getData(x, y) ? .5 : -.5;
@@ -658,8 +657,7 @@ public class OCR extends JFrame implements Runnable {
 		if (this.halt) {
 			this.trainThread = null;
 			this.train.setText("Begin Training");
-			JOptionPane.showMessageDialog(this, "Training has completed.",
-					"Training", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Training has completed.","Training", JOptionPane.PLAIN_MESSAGE);
 		}
 		final UpdateStats stats = new UpdateStats();
 		stats._tries = retry;
