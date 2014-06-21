@@ -53,7 +53,7 @@ public class WorkerThread implements Runnable {
 
             }
             System.out.println("\nFinished Thread!");
-
+            
             if (errorCount >= MAX_ERROR_COUNT) {
 
             }
@@ -91,6 +91,7 @@ public class WorkerThread implements Runnable {
 //        train[2][3] = 230;
 //        train[2][4] = 240;
 //        train[2][5] = 250;
+        
         input[0] = 1;
         input[1] = 2;
         input[2] = 3;
@@ -134,11 +135,11 @@ public class WorkerThread implements Runnable {
         input[4] = 5;
         input[5] = 6;
 
-        winner = som.winner(input);
+         winner = som.winner(input);
         System.out.println("\nInput :" + printVector(input));
         System.out.println("Winner : " + winner);
         System.out.println("ValueR : " + som.getOutputWeights().get(winner, 0));
-
+        
     }
 
     private String printVector(double v[]) {

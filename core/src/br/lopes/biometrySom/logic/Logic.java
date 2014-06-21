@@ -44,7 +44,7 @@ public class Logic {
         train[0][4] = 5;
         train[0][5] = 6;
  
-        //First Sample will set the first outputNeuron
+        //Second Sample will set the 2nd outputNeuron
         train[1][0] = 80;
         train[1][1] = 90;
         train[1][2] = 100;
@@ -52,7 +52,7 @@ public class Logic {
         train[1][4] = 120;
         train[1][5] = 130;
  
-        //First Sample will set the first outputNeuron
+        //Third Sample will set the 3rd outputNeuron
         train[2][0] = 200;
         train[2][1] = 210;
         train[2][2] = 220;
