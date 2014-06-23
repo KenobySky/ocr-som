@@ -1,32 +1,36 @@
 package br.lopes.biometrySom.logic;
 
+import br.lopes.biometrySom.Images.DownSample;
+import br.lopes.biometrySom.Images.LetterDrawn;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
 import com.heatonresearch.book.jeffheatoncode.som.SelfOrganizingMap;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
 import java.text.Normalizer;
+import java.util.ArrayList;
 
 public class WorkerThread implements Runnable {
 
     //References
     private final TrainSelfOrganizingMap trainer;
     private final SelfOrganizingMap som;
-
-    //Thread flags
-    private boolean stopThread = false;
+    private Logic logic;
 
     //Variables
-    private final int MAX_ERROR_COUNT = 2000;
+    private int MAX_ERROR_COUNT = 2000;
     private int retry = 0;
     private double totalError, bestError;
 
-    public WorkerThread(TrainSelfOrganizingMap trainer, SelfOrganizingMap som) {
+    public WorkerThread(Logic logic, TrainSelfOrganizingMap trainer, SelfOrganizingMap som, int max_error_count) {
         this.trainer = trainer;
         this.som = som;
+        this.MAX_ERROR_COUNT = max_error_count;
+        this.logic = logic;
     }
 
     @Override
     public void run() {
-        while (!stopThread) {
+        while (logic.runningThread) {
 
             trainer.initialize();
 
@@ -38,6 +42,7 @@ public class WorkerThread implements Runnable {
                 retry++;
                 this.totalError = trainer.getTotalError();
                 this.bestError = trainer.getBestError();
+
                 if (this.bestError < lastError) {
                     lastError = this.bestError;
                     errorCount = 0;
@@ -51,104 +56,46 @@ public class WorkerThread implements Runnable {
 
                 System.out.println("Error Count = " + errorCount);
 
-            }
-            System.out.println("\nFinished Thread!");
-            
-            if (errorCount >= MAX_ERROR_COUNT) {
+                if (!logic.runningThread) {
+                    System.out.println("Warning : Breaking Thread during inner loop!");
+                    break;
+                }
 
             }
 
-            stopThread = true;
-            test();
+            logic.runningThread = false;
+            //
+            logic.printInfo("Finished Training SOM - Commencing Mapping...");
+            mapNeurons(logic.getMap());
+            logic.printInfo("Finished Mapping! Ready To Recognize!");
 
         }
     }
 
-    private void test() {
-        System.out.println("\n\nTesting SOM!");
-        double[] input = new double[6];
+    public ArrayList<Map> mapNeurons(ArrayList<Map> map) {
 
-//        //First Sample will set the first outputNeuron
-//        train[0][0] = 1;
-//        train[0][1] = 2;
-//        train[0][2] = 3;
-//        train[0][3] = 4;
-//        train[0][4] = 5;
-//        train[0][5] = 6;
-// 
-//        //First Sample will set the first outputNeuron
-//        train[1][0] = 80;
-//        train[1][1] = 90;
-//        train[1][2] = 100;
-//        train[1][3] = 110;
-//        train[1][4] = 120;
-//        train[1][5] = 130;
-// 
-//        //First Sample will set the first outputNeuron
-//        train[2][0] = 200;
-//        train[2][1] = 210;
-//        train[2][2] = 220;
-//        train[2][3] = 230;
-//        train[2][4] = 240;
-//        train[2][5] = 250;
-        
-        input[0] = 1;
-        input[1] = 2;
-        input[2] = 3;
-        input[3] = 4;
-        input[4] = 5;
-        input[5] = 6;
+        ArrayList<LetterDrawn> lettersDrawn = logic.getMainView().getLettersDrawn();
 
-        int winner = som.winner(input);
-        System.out.println("\nInput :" + printVector(input));
-        System.out.println("Winner : " + winner);
-        System.out.println("ValueR : " + som.getOutputWeights().get(winner, 0));
+        double[] input = new double[(LetterDrawn.DOWNSAMPLE_WIDTH * LetterDrawn.DOWNSAMPLE_HEIGHT)];
 
-        input[0] = 80;
-        input[1] = 90;
-        input[2] = 100;
-        input[3] = 110;
-        input[4] = 120;
-        input[5] = 130;
+        for (int i = 0; i < lettersDrawn.size(); i++) {
 
-        winner = som.winner(input);
-        System.out.println("\nInput :" + printVector(input));
-        System.out.println("Winner : " + winner);
-        System.out.println("ValueR : " + som.getOutputWeights().get(winner, 0));
+            Pixmap downSampled = DownSample.downSample(lettersDrawn.get(i).getSample());
 
-        input[0] = 200;
-        input[1] = 210;
-        input[2] = 220;
-        input[3] = 230;
-        input[4] = 240;
-        input[5] = 250;
+            int index = 0;
 
-        winner = som.winner(input);
-        System.out.println("\nInput :" + printVector(input));
-        System.out.println("Winner : " + winner);
-        System.out.println("ValueR : " + som.getOutputWeights().get(winner, 0));
+            for (int x = 0; x < downSampled.getWidth(); x++) {
+                for (int y = 0; y < downSampled.getHeight(); y++, index++) {
 
-        input[0] = 0;
-        input[1] = 2;
-        input[2] = 2;
-        input[3] = 5;
-        input[4] = 5;
-        input[5] = 6;
+                    int pixel = downSampled.getPixel(x, y);
+                    input[index] = pixel;
 
-         winner = som.winner(input);
-        System.out.println("\nInput :" + printVector(input));
-        System.out.println("Winner : " + winner);
-        System.out.println("ValueR : " + som.getOutputWeights().get(winner, 0));
-        
-    }
-
-    private String printVector(double v[]) {
-        String answer = "";
-
-        for (int i = 0; i < v.length; i++) {
-            answer += v[i] + ";";
+                }
+            }
+            map.add(new Map(som.winner(input), lettersDrawn.get(i).getLetterName()));
         }
-        return answer;
+
+        return logic.getMap();
     }
 
 }
