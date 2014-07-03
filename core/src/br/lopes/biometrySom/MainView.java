@@ -3,14 +3,14 @@ package br.lopes.biometrySom;
 import br.lopes.biometrySom.Images.DownSample;
 import br.lopes.biometrySom.Images.LetterDrawn;
 import br.lopes.biometrySom.logic.Logic;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
 import java.util.ArrayList;
 
-
-public class MainView {
+public class MainView extends ApplicationAdapter {
 
     private Logic logic;
     private ArrayList<LetterDrawn> lettersDrawn;
@@ -18,6 +18,11 @@ public class MainView {
     public MainView() {
         lettersDrawn = new ArrayList<LetterDrawn>();
         logic = new Logic(this);
+    }
+    
+    @Override
+    public void render() {
+
     }
 
     //View Methods
@@ -83,12 +88,10 @@ public class MainView {
         }
 
         return "?";
-    }   
+    }
 
     public ArrayList<LetterDrawn> getLettersDrawn() {
         return lettersDrawn;
     }
-    
-    
 
 }
