@@ -1,4 +1,4 @@
-package br.lopes.biometrySom.Images;
+package br.lopes.biometrySom.images;
 
 import com.badlogic.gdx.graphics.Pixmap;
 

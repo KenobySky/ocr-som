@@ -1,7 +1,7 @@
-package br.lopes.biometrySom.Images;
+package br.lopes.biometrySom.images;
 
-import static br.lopes.biometrySom.Images.LetterDrawn.DOWNSAMPLE_HEIGHT;
-import static br.lopes.biometrySom.Images.LetterDrawn.DOWNSAMPLE_WIDTH;
+import static br.lopes.biometrySom.images.LetterDrawn.DOWNSAMPLE_HEIGHT;
+import static br.lopes.biometrySom.images.LetterDrawn.DOWNSAMPLE_WIDTH;
 import com.badlogic.gdx.graphics.Pixmap;
 
 /**

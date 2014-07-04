@@ -1,6 +1,6 @@
 package z.test;
 
-import br.lopes.biometrySom.MainView;
+import br.lopes.biometrySom.OcrSom;
 import br.lopes.biometrySom.logic.Logic;
 import br.lopes.biometrySom.logic.WorkerThread;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
@@ -14,7 +14,7 @@ import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
 public class TestExample {
 
     //Reference to View
-    private MainView view;
+    private OcrSom view;
 
     //SOM Variables
     private boolean started = false;
@@ -33,10 +33,8 @@ public class TestExample {
         TestExample logic = new TestExample(null);
         int sample_count = 5;
         int inputCount = 6;
-        
-        int outputCount = sample_count;
 
-        double[][] train = new double[sample_count][inputCount];
+		double[][] train = new double[sample_count][inputCount];
 
         //First Sample will set the first outputNeuron
         train[0][0] = 0;
@@ -82,10 +80,10 @@ public class TestExample {
         logic.normalizationType = NormalizeInput.NormalizationType.MULTIPLICATIVE;
         logic.learningMethod = TrainSelfOrganizingMap.LearningMethod.ADDITIVE ;
 
-        logic.start(inputCount, outputCount, logic.normalizationType, train, logic.learningMethod, logic.learnRate);
+        logic.start(inputCount, sample_count, logic.normalizationType, train, logic.learningMethod, logic.learnRate);
     }
 
-    public TestExample(MainView view) {
+    public TestExample(OcrSom view) {
         this.view = view;
 
     }

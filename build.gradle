@@ -7,57 +7,56 @@ buildscript {
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
         classpath 'com.android.tools.build:gradle:0.10+'
-		classpath "de.undercouch:gradle-download-task:+"
+		classpath 'de.undercouch:gradle-download-task:+'
     }
 }
 
 allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
 
     version = '1.0'
     ext {
         appName = 'biometry-som'
-        gdxVersion = '1.1.0'
+        gdxVersion = '1.2.1-SNAPSHOT'
+		libgdxUtilsVersion = '0.3.5-SNAPSHOT'
         roboVMVersion = '0.0.13'
     }
 
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 }
 
-apply plugin: "download-task"
-import de.undercouch.gradle.tasks.download.Download
+project(':core') {
+	apply plugin: 'java'
 
-task fetchLibs(type: Download) {
-    src "http://dl.bintray.com/dermetfan/generic/libgdx-utils/0.3.2/libgdx-utils.jar"
-	file("libs/").mkdirs()
-    dest "libs"
-    onlyIfNewer true
+	dependencies {
+		compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+		compile "net.dermetfan.libgdx-utils:libgdx-utils:$libgdxUtilsVersion"
+	}
 }
 
-project(":desktop") {
-    apply plugin: "java"
+project(':desktop') {
+    apply plugin: 'java'
 
     dependencies {
-        compile project(":core")
+        compile project(':core')
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
-project(":android") {
-    apply plugin: "android"
+project(':android') {
+    apply plugin: 'android'
 
     configurations { natives }
 
     dependencies {
-        compile project(":core")
+        compile project(':core')
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
@@ -65,27 +64,19 @@ project(":android") {
     }
 }
 
-project(":html") {
-    apply plugin: "gwt"
-    apply plugin: "war"
+project(':html') {
+	apply plugin: 'gwt'
+	apply plugin: 'war'
 
-    dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-    }
+	dependencies {
+		compile project(':core')
+		compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+		compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+		compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+	}
 }
 
-project(":core") {
-    apply plugin: "java"
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-		compile fileTree(dir: "../libs", include: "*.jar", exclude: ["*-sources.jar", "*-src.jar"])
-    }
-}
 
 tasks.eclipse.doLast {
-    delete ".project"
+    delete '.project'
 }

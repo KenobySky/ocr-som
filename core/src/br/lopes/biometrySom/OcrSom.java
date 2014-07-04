@@ -1,22 +1,21 @@
 package br.lopes.biometrySom;
 
-import br.lopes.biometrySom.Images.DownSample;
-import br.lopes.biometrySom.Images.LetterDrawn;
+import br.lopes.biometrySom.images.DownSample;
+import br.lopes.biometrySom.images.LetterDrawn;
 import br.lopes.biometrySom.logic.Logic;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
-import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
-import java.util.ArrayList;
+import com.badlogic.gdx.utils.Array;
+import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput.NormalizationType;
+import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap.LearningMethod;
 
-public class MainView extends ApplicationAdapter {
+public class OcrSom extends ApplicationAdapter {
 
     private Logic logic;
-    private ArrayList<LetterDrawn> lettersDrawn;
+    private Array<LetterDrawn> lettersDrawn;
 
-    public MainView() {
-        lettersDrawn = new ArrayList<LetterDrawn>();
+    public OcrSom() {
+        lettersDrawn = new Array<>();
         logic = new Logic(this);
     }
     
@@ -33,16 +32,15 @@ public class MainView extends ApplicationAdapter {
 
     }
 
-    private void startTrain(NormalizeInput.NormalizationType normalizationType, TrainSelfOrganizingMap.LearningMethod learningMethod, float learnRate) {
-
+    private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
         //double[][] train
         int inputCount = (LetterDrawn.DOWNSAMPLE_WIDTH * LetterDrawn.DOWNSAMPLE_HEIGHT);
-        int outputCount = lettersDrawn.size();
+        int outputCount = lettersDrawn.size;
 
-        double[][] train = new double[lettersDrawn.size()][inputCount];
+        double[][] train = new double[lettersDrawn.size][inputCount];
         //Each Line is a letter representation in pixel
         //Each Column is a pixel
-        for (int i = 0; i < lettersDrawn.size(); i++) {
+        for (int i = 0; i < lettersDrawn.size; i++) {
             Pixmap letterSample = lettersDrawn.get(i).getSample();
             Pixmap downSampled = DownSample.downSample(letterSample);
 
@@ -59,39 +57,34 @@ public class MainView extends ApplicationAdapter {
         }
 
         logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
-
     }
 
-    //Recognize Methids
+    //Recognize Methods
     //Returns the Recognize Letter
     public String recognizeLetter(Pixmap letterDrawnImage) {
-
         Pixmap downSampled = DownSample.downSample(letterDrawnImage);
 
-        //
         double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
         int index = 0;
-        for (int x = 0; x < downSampled.getWidth(); x++) {
-            for (int y = 0; y < downSampled.getHeight(); y++) {
-                int pixel = downSampled.getPixel(x, y);
-                input[index] = pixel;
-                index++;
-            }
-        }
+        for (int x = 0; x < downSampled.getWidth(); x++)
+			for(int y = 0; y < downSampled.getHeight(); y++) {
+				int pixel = downSampled.getPixel(x, y);
+				input[index] = pixel;
+				index++;
+			}
 
         int winner = logic.getSom().winner(input);
 
-        for (int i = 0; i < logic.getMap().size(); i++) {
-            if (logic.getMap().get(i).getWinnerNeuronIndex() == winner) {
-                return logic.getMap().get(i).getLetter();
-            }
-        }
+        for (int i = 0; i < logic.getMap().size(); i++)
+			if(logic.getMap().get(i).getWinnerNeuronIndex() == winner)
+				return logic.getMap().get(i).getLetter();
 
         return "?";
     }
 
-    public ArrayList<LetterDrawn> getLettersDrawn() {
-        return lettersDrawn;
-    }
+	/** @return the {@link #lettersDrawn} */
+	public Array<LetterDrawn> getLettersDrawn() {
+		return lettersDrawn;
+	}
 
 }

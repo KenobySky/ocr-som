@@ -1,12 +1,11 @@
 package br.lopes.biometrySom.logic;
 
-import br.lopes.biometrySom.Images.DownSample;
-import br.lopes.biometrySom.Images.LetterDrawn;
+import br.lopes.biometrySom.images.DownSample;
+import br.lopes.biometrySom.images.LetterDrawn;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
 import com.heatonresearch.book.jeffheatoncode.som.SelfOrganizingMap;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
-import java.text.Normalizer;
+
 import java.util.ArrayList;
 
 public class WorkerThread implements Runnable {
@@ -74,7 +73,7 @@ public class WorkerThread implements Runnable {
 
     public ArrayList<Map> mapNeurons(ArrayList<Map> map) {
 
-        ArrayList<LetterDrawn> lettersDrawn = logic.getMainView().getLettersDrawn();
+        ArrayList<LetterDrawn> lettersDrawn = logic.getOcrSom().getLettersDrawn();
 
         double[] input = new double[(LetterDrawn.DOWNSAMPLE_WIDTH * LetterDrawn.DOWNSAMPLE_HEIGHT)];
 
