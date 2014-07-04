@@ -1,33 +1,33 @@
 buildscript {
-    repositories {
-        mavenCentral()
-        mavenLocal()
-        maven { url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/' }
-    }
-    dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
-        classpath 'com.android.tools.build:gradle:0.10+'
+	repositories {
+		mavenCentral()
+		mavenLocal()
+		maven { url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/' }
+	}
+	dependencies {
+		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
+		classpath 'com.android.tools.build:gradle:0.10+'
 		classpath 'de.undercouch:gradle-download-task:+'
-    }
+	}
 }
 
 allprojects {
-    apply plugin: 'eclipse'
-    apply plugin: 'idea'
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
 
-    version = '1.0'
-    ext {
-        appName = 'biometry-som'
-        gdxVersion = '1.2.1-SNAPSHOT'
+	version = '1.0'
+	ext {
+		appName = 'biometry-som'
+		gdxVersion = '1.2.1-SNAPSHOT'
 		libgdxUtilsVersion = '0.3.5-SNAPSHOT'
-        roboVMVersion = '0.0.13'
-    }
+		roboVMVersion = '0.0.13'
+	}
 
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    }
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+	}
 }
 
 project(':core') {
@@ -40,28 +40,28 @@ project(':core') {
 }
 
 project(':desktop') {
-    apply plugin: 'java'
+	apply plugin: 'java'
 
-    dependencies {
-        compile project(':core')
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-    }
+	dependencies {
+		compile project(':core')
+		compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+		compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+		compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+	}
 }
 
 project(':android') {
-    apply plugin: 'android'
+	apply plugin: 'android'
 
-    configurations { natives }
+	configurations { natives }
 
-    dependencies {
-        compile project(':core')
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-    }
+	dependencies {
+		compile project(':core')
+		compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+		natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+		natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+		natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+	}
 }
 
 project(':html') {
@@ -78,5 +78,5 @@ project(':html') {
 
 
 tasks.eclipse.doLast {
-    delete '.project'
+	delete '.project'
 }
