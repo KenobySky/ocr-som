@@ -8,6 +8,8 @@ public class DesktopLauncher {
 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+		cfg.width = 410;
+		cfg.height = 630;
 		new LwjglApplication(new OcrSom(), cfg);
 	}
 

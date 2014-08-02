@@ -1,8 +1,9 @@
 package br.lopes.biometrySom.images;
 
+import com.badlogic.gdx.graphics.Pixmap;
+
 import static br.lopes.biometrySom.images.LetterDrawn.DOWNSAMPLE_HEIGHT;
 import static br.lopes.biometrySom.images.LetterDrawn.DOWNSAMPLE_WIDTH;
-import com.badlogic.gdx.graphics.Pixmap;
 
 /**
  *
@@ -10,21 +11,18 @@ import com.badlogic.gdx.graphics.Pixmap;
  */
 public class DownSample {
 
-    public static Pixmap downSample(Pixmap sample) {
-        Pixmap findBorders = findBorders(sample);
-        Pixmap downSample = downSample(DOWNSAMPLE_WIDTH, DOWNSAMPLE_HEIGHT, findBorders);
-        return downSample;
-    }
+	public static Pixmap downSample(Pixmap sample) {
+		return downSample(DOWNSAMPLE_WIDTH, DOWNSAMPLE_HEIGHT, findBorders(sample));
+	}
 
-    //Eliminate White Space around the drawn letter
-    private static Pixmap findBorders(Pixmap letterDrawn) {
+	//Eliminate White Space around the drawn letter
+	private static Pixmap findBorders(Pixmap letterDrawn) {
+		return null;
+	}
 
-        return null;
-    }
-
-    //Reduce Size of drawn Letter
-    private static Pixmap downSample(int width, int height, Pixmap letterDrawn) {
-        return null;
-    }
+	//Reduce Size of drawn Letter
+	private static Pixmap downSample(int width, int height, Pixmap letterDrawn) {
+		return null;
+	}
 
 }
