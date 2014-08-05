@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 
 public class LetterDrawn {
 
-    public static final int DOWNSAMPLE_WIDTH = 10;
-    public static final int DOWNSAMPLE_HEIGHT = 10;
     private String letterName = "?";
 
     private Pixmap sample;

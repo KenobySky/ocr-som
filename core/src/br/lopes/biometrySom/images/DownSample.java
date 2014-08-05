@@ -1,7 +1,6 @@
 package br.lopes.biometrySom.images;
 
-import static br.lopes.biometrySom.images.LetterDrawn.DOWNSAMPLE_HEIGHT;
-import static br.lopes.biometrySom.images.LetterDrawn.DOWNSAMPLE_WIDTH;
+import br.lopes.biometrySom.Options;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
@@ -15,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class DownSample {
 
     public static Pixmap downSample(Pixmap sample) {
-        return downSample(DOWNSAMPLE_WIDTH, DOWNSAMPLE_HEIGHT, findBorders(sample));
+        return downSample(Options.DOWNSAMPLE_WIDTH, Options.DOWNSAMPLE_HEIGHT, findBorders(sample));
     }
 
     //Eliminate White Space around the drawn letter

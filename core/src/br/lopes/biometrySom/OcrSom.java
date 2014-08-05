@@ -186,7 +186,7 @@ public class OcrSom extends ApplicationAdapter {
 
     private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
 
-        int inputCount = (LetterDrawn.DOWNSAMPLE_WIDTH * LetterDrawn.DOWNSAMPLE_HEIGHT);
+        int inputCount = (Options.DOWNSAMPLE_WIDTH * Options.DOWNSAMPLE_HEIGHT);
         int outputCount = lettersDrawn.size;
 
         double[][] train = new double[lettersDrawn.size][inputCount];
