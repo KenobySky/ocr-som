@@ -1,8 +1,9 @@
 package br.lopes.biometrySom.images;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Letter {
+public class Letter implements Disposable {
 
     private String name;
 
@@ -14,6 +15,14 @@ public class Letter {
         this.name = name;
     }
 
+	/** disposes the {@link #sample} */
+	@Override
+	public void dispose() {
+		sample.dispose();
+	}
+
+	// getters and setters
+
     public String getName() {
         return name;
     }
@@ -21,7 +30,6 @@ public class Letter {
     public Pixmap getSample() {
         return sample;
     }
-
 	@Override
 	public String toString() {
 		return name;

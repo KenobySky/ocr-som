@@ -146,7 +146,7 @@ public class OcrSom extends ApplicationAdapter {
 			public boolean handle(Event event) {
 				int index = letters.getSelectedIndex();
 				if(index != -1)
-					letters.getItems().removeIndex(index).getSample().dispose();
+					letters.getItems().removeIndex(index).dispose();
 				return true;
 			}
 		});
