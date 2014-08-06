@@ -32,17 +32,13 @@ import net.dermetfan.utils.libgdx.math.GeometryUtils;
 
 public class OcrSom extends ApplicationAdapter {
 
-	private Logic logic;
+	private Logic logic = new Logic(this);
 
 	private Stage stage;
 	private Pixmap canvasPixmap;
 	private Texture canvasTexture, sampleTexture;
 	private TextField name;
 	private List<Letter> letters;
-
-	public OcrSom() {
-		logic = new Logic(this);
-	}
 
 	//View Methods
 	@Override
@@ -183,6 +179,7 @@ public class OcrSom extends ApplicationAdapter {
 	private void showMessage(String msg) {
 		if(msg != null && !msg.isEmpty()) {
 			//Show this in A console like in TSM project
+			Gdx.app.log("Message", msg);
 		}
 	}
 
