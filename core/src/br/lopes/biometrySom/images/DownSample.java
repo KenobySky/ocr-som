@@ -14,7 +14,7 @@ public class DownSample {
     private static int BLACK = Color.rgba8888(Color.BLACK);
 
     public static Pixmap downSample(Pixmap sample) {
-        return downSample(Options.DOWNSAMPLE_WIDTH, Options.DOWNSAMPLE_HEIGHT, findBorders(sample));
+        return downSample(Options.getDOWNSAMPLE_WIDTH(), Options.getDOWNSAMPLE_HEIGHT(), findBorders(sample));
     }
 
     //Eliminate White Space around the drawn letter

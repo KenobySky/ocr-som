@@ -55,7 +55,7 @@ public class OcrSom extends ApplicationAdapter {
         canvasPixmap.fill();
         canvasPixmap.setColor(Color.BLACK); // for drawing
         canvasTexture = new Texture(canvasPixmap);
-        sampleTexture = new Texture(Options.DOWNSAMPLE_WIDTH, Options.DOWNSAMPLE_HEIGHT, Format.RGBA8888);
+        sampleTexture = new Texture(Options.getDOWNSAMPLE_WIDTH(), Options.getDOWNSAMPLE_HEIGHT(), Format.RGBA8888);
 
         final Image canvas = new Image(new TextureRegionDrawable(new TextureRegion(canvasTexture)));
         Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin);
@@ -87,6 +87,7 @@ public class OcrSom extends ApplicationAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 Pixmap sampled = DownSample.downSample(canvasPixmap);
                 sampleTexture.draw(sampled, 0, 0);
+
                 sampled.dispose();
             }
         });
@@ -104,7 +105,7 @@ public class OcrSom extends ApplicationAdapter {
         train.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                startTrain(Options.normalizeInput, Options.trainLearningMethod, Options.learnRate);
+                startTrain(Options.getNormalizeInput(), Options.getTrainLearningMethod(), Options.getLearnRate());
             }
         });
 
@@ -203,7 +204,7 @@ public class OcrSom extends ApplicationAdapter {
     //Logic Methods
     private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
 
-        int inputCount = (Options.DOWNSAMPLE_WIDTH * Options.DOWNSAMPLE_HEIGHT);
+        int inputCount = (Options.getDOWNSAMPLE_WIDTH() * Options.getDOWNSAMPLE_HEIGHT());
         int outputCount = letters.getItems().size;
 
         double[][] train = new double[letters.getItems().size][inputCount];

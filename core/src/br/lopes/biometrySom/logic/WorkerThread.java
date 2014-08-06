@@ -1,7 +1,5 @@
 package br.lopes.biometrySom.logic;
 
-import java.util.ArrayList;
-
 import br.lopes.biometrySom.Options;
 import br.lopes.biometrySom.images.DownSample;
 import br.lopes.biometrySom.images.Letter;
@@ -9,6 +7,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
 import com.heatonresearch.book.jeffheatoncode.som.SelfOrganizingMap;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
+import java.util.ArrayList;
 
 public class WorkerThread implements Runnable {
 
@@ -31,7 +30,7 @@ public class WorkerThread implements Runnable {
 
     @Override
     public void run() {
-        while (logic.runningThread) {
+        while (Options.isThreadRunning()) {
 
             trainer.initialize();
 
@@ -57,18 +56,17 @@ public class WorkerThread implements Runnable {
 
                 System.out.println("Error Count = " + errorCount);
 
-                if (!logic.runningThread) {
+                if (!Options.isThreadRunning()) {
                     System.out.println("Warning : Breaking Thread during inner loop!");
                     break;
                 }
 
             }
 
-            logic.runningThread = false;
-            //
             logic.printInfo("Finished Training SOM - Commencing Mapping...");
             mapNeurons(logic.getMap());
             logic.printInfo("Finished Mapping! Ready To Recognize!");
+            Options.setThreadRunning(false);
 
         }
     }
@@ -77,7 +75,7 @@ public class WorkerThread implements Runnable {
 
         Array<Letter> lettersDrawn = logic.getOcrSom().getLetters();
 
-        double[] input = new double[(Options.DOWNSAMPLE_WIDTH * Options.DOWNSAMPLE_HEIGHT)];
+        double[] input = new double[(Options.getDOWNSAMPLE_WIDTH() * Options.getDOWNSAMPLE_HEIGHT())];
 
         for (int i = 0; i < lettersDrawn.size; i++) {
 
