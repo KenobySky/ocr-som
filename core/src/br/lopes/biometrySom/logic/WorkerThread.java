@@ -75,7 +75,7 @@ public class WorkerThread implements Runnable {
 
         Array<Letter> lettersDrawn = logic.getOcrSom().getLetters();
 
-        double[] input = new double[(Options.getDOWNSAMPLE_WIDTH() * Options.getDOWNSAMPLE_HEIGHT())];
+        double[] input = new double[(Options.getDownsampleWidth() * Options.getDownsampleHeight())];
 
         for (int i = 0; i < lettersDrawn.size; i++) {
 
