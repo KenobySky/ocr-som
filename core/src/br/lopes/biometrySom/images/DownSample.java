@@ -2,10 +2,6 @@ package br.lopes.biometrySom.images;
 
 import br.lopes.biometrySom.Options;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  *
@@ -71,33 +67,14 @@ public class DownSample {
             }
         }
 
-        px.dispose();
         return rbPixmap;
     }
 
     //Reduce Size of drawn Letter
-    private static Pixmap downSample(int width, int height, Pixmap letterDrawn) {
-        Texture texture = new Texture(letterDrawn);
-        Sprite sprite = new Sprite(texture);
-
-        //DownSample
-        sprite.setSize(width, height);
-        texture = sprite.getTexture();
-
-        TextureData textureData = texture.getTextureData();
-        textureData.prepare();
-        Pixmap consumePixmap = textureData.consumePixmap();
-
-        texture.dispose();
-        return consumePixmap;
-    }
-
-    //Reduce Size of drawn Letter
-    private static Pixmap downSample(float width, float height, Pixmap letterDrawn) {
-        Image img = new Image(new Texture(letterDrawn));
-        img.setSize(width, height);
-
-        throw new UnsupportedOperationException("????");
+    public static Pixmap downSample(int width, int height, Pixmap pm) {
+		Pixmap ds = new Pixmap(width, height, pm.getFormat());
+		ds.drawPixmap(pm, 0, 0, pm.getWidth(), pm.getHeight(), 0, 0, width, height);
+		return ds;
     }
 
 }

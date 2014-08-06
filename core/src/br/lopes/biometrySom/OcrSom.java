@@ -1,7 +1,7 @@
 package br.lopes.biometrySom;
 
 import br.lopes.biometrySom.images.DownSample;
-import br.lopes.biometrySom.images.LetterDrawn;
+import br.lopes.biometrySom.images.Letter;
 import br.lopes.biometrySom.logic.Logic;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,225 +23,240 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput.NormalizationType;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap.LearningMethod;
+import net.dermetfan.utils.libgdx.math.GeometryUtils;
 
 public class OcrSom extends ApplicationAdapter {
 
-    private Logic logic;
-    private Array<LetterDrawn> lettersDrawn;
+	private Logic logic;
 
-    private Stage stage;
-    private Pixmap canvasPixmap, samplePixmap;
-    private Texture canvasTexture, sampleTexture;
-    private TextField letter;
-    private List<String> letters;
+	private Stage stage;
+	private Pixmap canvasPixmap, samplePixmap;
+	private Texture canvasTexture, sampleTexture;
+	private TextField name;
+	private List<Letter> letters;
 
-    public OcrSom() {
-        lettersDrawn = new Array<>();
-        logic = new Logic(this);
-    }
+	public OcrSom() {
+		logic = new Logic(this);
+	}
 
-    //View Methods
-    @Override
-    public void create() {
-        Assets.manager.load(Assets.class);
-        Assets.manager.finishLoading();
+	//View Methods
+	@Override
+	public void create() {
+		Assets.manager.load(Assets.class);
+		Assets.manager.finishLoading();
 
-        Skin skin = Assets.manager.get(Assets.uiskin, Skin.class);
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+		Skin skin = Assets.manager.get(Assets.uiskin, Skin.class);
+		stage = new Stage(new ScreenViewport());
+		Gdx.input.setInputProcessor(stage);
 
-        canvasPixmap = new Pixmap(400, 400, Format.RGBA4444);
-        canvasPixmap.setColor(Color.WHITE);
-        canvasPixmap.fill();
-        canvasTexture = new Texture(canvasPixmap);
-        samplePixmap = new Pixmap(100, 100, Format.RGBA4444);
-        samplePixmap.setColor(Color.WHITE);
-        samplePixmap.fill();
-        sampleTexture = new Texture(samplePixmap);
+		canvasPixmap = new Pixmap(400, 400, Format.RGBA8888);
+		canvasPixmap.setColor(Color.WHITE);
+		canvasPixmap.fill();
+		canvasPixmap.setColor(Color.BLACK); // for drawing
+		canvasTexture = new Texture(canvasPixmap);
+		samplePixmap = new Pixmap(100, 100, Format.RGBA8888);
+		samplePixmap.setColor(Color.WHITE);
+		samplePixmap.fill();
+		sampleTexture = new Texture(samplePixmap);
 
-        Image canvas = new Image(new TextureRegionDrawable(new TextureRegion(canvasTexture)));
-        Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin);
+		final Image canvas = new Image(new TextureRegionDrawable(new TextureRegion(canvasTexture)));
+		Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin);
+		Image sample = new Image(new TextureRegionDrawable(new TextureRegion(sampleTexture)));
 
-        Image sample = new Image(new TextureRegionDrawable(new TextureRegion(sampleTexture)));
+		name = new TextField("", skin);
+		letters = new List<>(skin);
+		Button train = new TextButton("Train", skin);
+		Button addLetter = new TextButton("Add letter", skin);
+		Button recognize = new TextButton("Recognize", skin);
+		Button delete = new TextButton("Delete", skin);
 
-        letter = new TextField("", skin);
-        letters = new List<>(skin);
-        Button train = new TextButton("Train", skin);
-        Button addLetter = new TextButton("Add letter", skin);
-        Button recognize = new TextButton("Recognize", skin);
-        Button delete = new TextButton("Delete", skin);
+		canvas.addListener(new InputListener() {
+			float oldX;
+			float oldY;
 
-        train.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                startTrain(Options.normalizeInput, Options.trainLearningMethod, Options.learnRate);
-                return false;
-            }
-        });
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				oldX = x;
+				oldY = GeometryUtils.invertAxis(y, canvas.getHeight());
+				return true;
+			}
 
-        addLetter.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                addLetter(canvasPixmap, getLetter());
-                return true;
-            }
-        });
+			@Override
+			public void touchDragged(InputEvent event, float x, float y, int pointer) {
+				y = GeometryUtils.invertAxis(y, canvas.getHeight());
+				canvasPixmap.drawLine((int) oldX, (int) oldY, (int) x, (int) y);
+				canvasTexture.draw(canvasPixmap, 0, 0);
+				oldX = x;
+				oldY = y;
+			}
+		});
 
-        recognize.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                String recognizeLetter = recognizeLetter(canvasPixmap);
-                showMessage(recognizeLetter);
-                return true;
-            }
-        });
+		downsample.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Pixmap sampled = DownSample.downSample(sampleTexture.getWidth(), sampleTexture.getHeight(), canvasPixmap);
+				sampleTexture.draw(sampled, 0, 0);
+				sampled.dispose();
+			}
+		});
 
-        delete.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                int selectedIndex = letters.getSelectedIndex();
+		clear.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				canvasPixmap.setColor(Color.WHITE);
+				canvasPixmap.fill();
+				canvasTexture.draw(canvasPixmap, 0, 0);
+				canvasPixmap.setColor(Color.BLACK);
+			}
+		});
 
-                if (selectedIndex != -1) {
-                    lettersDrawn.get(selectedIndex).dispose();
-                    lettersDrawn.removeIndex(selectedIndex);
-                }
+		train.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				startTrain(Options.normalizeInput, Options.trainLearningMethod, Options.learnRate);
+				return false;
+			}
+		});
 
-                return true;
-            }
-        });
+		addLetter.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				letters.getItems().add(new Letter(canvasPixmap, name.getText()));
+				return true;
+			}
+		});
 
-        Table table = new Table();
-        table.setFillParent(true);
-        table.defaults().expand().fillX();
-        table.add(canvas).fill(false).colspan(2).row();
-        table.add(downsample);
-        table.add(clear).row();
-        table.add(sample).fill(false);
-        table.add(letters).row();
-        table.add(train);
+		recognize.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				String recognizeLetter = recognizeLetter(canvasPixmap);
+				showMessage(recognizeLetter);
+				return true;
+			}
+		});
 
-        Table addLetterTable = new Table();
-        addLetterTable.defaults().expand().fillX();
-        addLetterTable.add(letter);
-        addLetterTable.add(addLetter);
-        table.add(addLetterTable).row();
-        table.add(recognize);
-        table.add(delete);
-        table.debug();
+		delete.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				int index = letters.getSelectedIndex();
+				if(index != -1)
+					letters.getItems().removeIndex(index).getSample().dispose();
+				return true;
+			}
+		});
 
-        stage.addActor(table);
-    }
+		Table table = new Table();
+		table.setFillParent(true);
+		table.defaults().expand().fillX();
+		table.add(canvas).fill(false).colspan(2).row();
+		table.add(downsample);
+		table.add(clear).row();
+		table.add(sample).fill(false);
+		table.add(letters).row();
+		table.add(train);
 
-    @Override
-    public void render() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Table addLetterTable = new Table();
+		addLetterTable.defaults().expand().fillX();
+		addLetterTable.add(name);
+		addLetterTable.add(addLetter);
+		table.add(addLetterTable).row();
+		table.add(recognize);
+		table.add(delete);
 
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-        //Table.drawDebug(stage);
-    }
+		stage.addActor(table);
+	}
 
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
+	@Override
+	public void render() {
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-        canvasPixmap.dispose();
-        canvasTexture.dispose();
-        samplePixmap.dispose();
-        sampleTexture.dispose();
-    }
+		stage.act(Gdx.graphics.getDeltaTime());
+		stage.draw();
+	}
 
-    private void showMessage(String msg) {
-        if (msg != null) {
-            //Show this in A console like in TSM project
-        }
+	@Override
+	public void resize(int width, int height) {
+		stage.getViewport().update(width, height, true);
+	}
 
-    }
+	@Override
+	public void dispose() {
+		stage.dispose();
+		canvasPixmap.dispose();
+		canvasTexture.dispose();
+		samplePixmap.dispose();
+		sampleTexture.dispose();
+	}
 
-    private String getLetter() {
-        String string = letter.getText();
+	private void showMessage(String msg) {
+		if(msg != null && !msg.isEmpty()) {
+			//Show this in A console like in TSM project
+		}
+	}
 
-        if (string == null) {
-            return "?";
-        }
+	//Logic Methods
 
-        string = string.trim();
+	private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
 
-        return string;
-    }
+		int inputCount = (Options.DOWNSAMPLE_WIDTH * Options.DOWNSAMPLE_HEIGHT);
+		int outputCount = letters.getItems().size;
 
-    //Logic Methods
-    private void addLetter(Pixmap letterDrawnImage, String letterName) {
-        LetterDrawn ld = new LetterDrawn(letterDrawnImage, letterName);
-        lettersDrawn.add(ld);
+		double[][] train = new double[letters.getItems().size][inputCount];
+		//Each Line is a letter representation in pixel
+		//Each Column is a pixel
+		for(int i = 0; i < letters.getItems().size; i++) {
+			Pixmap letterSample = letters.getItems().get(i).getSample();
+			Pixmap downSampled = DownSample.downSample(letterSample);
+			int index = 0;
+			for(int x = 0; x < downSampled.getWidth(); x++) {
+				for(int y = 0; y < downSampled.getHeight(); y++) {
+					int pixel = downSampled.getPixel(x, y);
+					train[i][index] = pixel;
+					index++;
+				}
+			}
 
-    }
+		}
 
-    private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
+		logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
+	}
 
-        int inputCount = (Options.DOWNSAMPLE_WIDTH * Options.DOWNSAMPLE_HEIGHT);
-        int outputCount = lettersDrawn.size;
+	//Recognize Methods
+	//Returns the Recognize Letter
+	public String recognizeLetter(Pixmap letterDrawnImage) {
+		Pixmap downSampled = DownSample.downSample(letterDrawnImage);
 
-        double[][] train = new double[lettersDrawn.size][inputCount];
-        //Each Line is a letter representation in pixel
-        //Each Column is a pixel
-        for (int i = 0; i < lettersDrawn.size; i++) {
-            Pixmap letterSample = lettersDrawn.get(i).getSample();
-            Pixmap downSampled = DownSample.downSample(letterSample);
-            int index = 0;
-            for (int x = 0; x < downSampled.getWidth(); x++) {
-                for (int y = 0; y < downSampled.getHeight(); y++) {
-                    int pixel = downSampled.getPixel(x, y);
-                    train[i][index] = pixel;
-                    index++;
-                }
-            }
+		double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
+		int index = 0;
+		for(int x = 0; x < downSampled.getWidth(); x++) {
+			for(int y = 0; y < downSampled.getHeight(); y++) {
+				int pixel = downSampled.getPixel(x, y);
+				input[index] = pixel;
+				index++;
+			}
+		}
 
-        }
+		int winner = logic.getSom().winner(input);
 
-        logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
-    }
+		for(int i = 0; i < logic.getMap().size(); i++) {
+			if(logic.getMap().get(i).getWinnerNeuronIndex() == winner) {
+				return logic.getMap().get(i).getLetter();
+			}
+		}
 
-    //Recognize Methods
-    //Returns the Recognize Letter
-    public String recognizeLetter(Pixmap letterDrawnImage) {
-        Pixmap downSampled = DownSample.downSample(letterDrawnImage);
+		return "?";
+	}
 
-        double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
-        int index = 0;
-        for (int x = 0; x < downSampled.getWidth(); x++) {
-            for (int y = 0; y < downSampled.getHeight(); y++) {
-                int pixel = downSampled.getPixel(x, y);
-                input[index] = pixel;
-                index++;
-            }
-        }
+	// getters and setters
 
-        int winner = logic.getSom().winner(input);
-
-        for (int i = 0; i < logic.getMap().size(); i++) {
-            if (logic.getMap().get(i).getWinnerNeuronIndex() == winner) {
-                return logic.getMap().get(i).getLetter();
-            }
-        }
-
-        return "?";
-    }
-
-    /**
-     * @return the {@link #lettersDrawn}
-     */
-    public Array<LetterDrawn> getLettersDrawn() {
-        return lettersDrawn;
-    }
+	public Array<Letter> getLetters() {
+		return letters.getItems();
+	}
 
 }
