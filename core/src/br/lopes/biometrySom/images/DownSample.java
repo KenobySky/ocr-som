@@ -36,8 +36,10 @@ public class DownSample {
                 int pixel = px.getPixel(x, y);
 
                 if (pixel == BLACK) {
-                    System.out.println("Pixel == " + BLACK + " at " + x + ";" + y);
-                    //Y_AXIS
+
+                    /**
+                     * Y AXIS
+                     */
                     if (y0 == -1 || y < y0) {
                         y0 = y;
                     }
@@ -46,7 +48,9 @@ public class DownSample {
                         yf = y;
                     }
 
-                    //X_AXIS
+                    /**
+                     * X AXIS
+                     */
                     if (x0 == -1 || x < x0) {
                         x0 = x;
                     }

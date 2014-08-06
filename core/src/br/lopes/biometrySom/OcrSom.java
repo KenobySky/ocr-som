@@ -40,7 +40,16 @@ public class OcrSom extends ApplicationAdapter {
     private TextField name;
     private List<Letter> letters;
 
-    //View Methods
+    private Pixmap currentDownSampled;
+
+    /**
+     * Returns a boolean value which determines if a downsampling is required or
+     * not. If the screen was changed after a downsampling, the value will
+     * become true and force a downsampling before adding to letter List. If
+     * not, it wont downsample again.
+     */
+    private boolean downsampleRequired = true;
+
     @Override
     public void create() {
         Assets.manager.load(Assets.class);
@@ -76,6 +85,7 @@ public class OcrSom extends ApplicationAdapter {
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                downsampleRequired = true;
                 y = GeometryUtils.invertAxis(y, canvas.getHeight());
                 canvasPixmap.fillCircle((int) x, (int) y, 20);
                 canvasTexture.draw(canvasPixmap, 0, 0);
@@ -85,16 +95,17 @@ public class OcrSom extends ApplicationAdapter {
         downsample.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Pixmap sampled = DownSample.downSample(canvasPixmap);
-                sampleTexture.draw(sampled, 0, 0);
+                downsampleRequired = false;
+                currentDownSampled = DownSample.downSample(canvasPixmap);
+                sampleTexture.draw(currentDownSampled, 0, 0);
 
-                sampled.dispose();
             }
         });
 
         clear.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                downsampleRequired = true;
                 canvasPixmap.setColor(Color.WHITE);
                 canvasPixmap.fill();
                 canvasTexture.draw(canvasPixmap, 0, 0);
@@ -112,7 +123,12 @@ public class OcrSom extends ApplicationAdapter {
         addLetter.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                letters.getItems().add(new Letter(canvasPixmap, name.getText()));
+
+                if (downsampleRequired) {
+                    currentDownSampled = DownSample.downSample(canvasPixmap);
+                }
+
+                letters.getItems().add(new Letter(canvasPixmap, currentDownSampled, name.getText()));
                 name.setText("");
             }
         });
@@ -197,7 +213,6 @@ public class OcrSom extends ApplicationAdapter {
     public void showMessage(String msg) {
         if (msg != null && !msg.isEmpty()) {
             System.out.println("Incoming Message :" + msg);
-            //Show this in A console like in TSM project
             Gdx.app.log("Message", msg);
         }
     }
@@ -211,11 +226,11 @@ public class OcrSom extends ApplicationAdapter {
         double[][] train = new double[letters.getItems().size][inputCount];
         //Each Line is a letter representation in pixel
         //Each Column is a pixel
+        Pixmap downSampled;
         for (int i = 0; i < letters.getItems().size; i++) {
-            Pixmap letterSample = letters.getItems().get(i).getSample();
-            Pixmap downSampled = DownSample.downSample(letterSample);
-            int index = 0;
-            for (int x = 0; x < downSampled.getWidth(); x++) {
+            downSampled = letters.getItems().get(i).getDownSample();
+
+            for (int x = 0, index = 0; x < downSampled.getWidth(); x++) {
                 for (int y = 0; y < downSampled.getHeight(); y++) {
                     int pixel = downSampled.getPixel(x, y);
                     train[i][index] = pixel;

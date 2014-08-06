@@ -1,7 +1,6 @@
 package br.lopes.biometrySom.logic;
 
 import br.lopes.biometrySom.Options;
-import br.lopes.biometrySom.images.DownSample;
 import br.lopes.biometrySom.images.Letter;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
@@ -17,7 +16,7 @@ public class WorkerThread implements Runnable {
     private Logic logic;
 
     //Variables
-    private int MAX_ERROR_COUNT = 2000;
+    private int MAX_ERROR_COUNT;
     private int retry = 0;
     private double totalError, bestError;
 
@@ -74,16 +73,14 @@ public class WorkerThread implements Runnable {
     public ArrayList<Map> mapNeurons(ArrayList<Map> map) {
 
         Array<Letter> lettersDrawn = logic.getOcrSom().getLetters();
-
+        Pixmap downSampled;
         double[] input = new double[(Options.getDOWNSAMPLE_WIDTH() * Options.getDOWNSAMPLE_HEIGHT())];
 
         for (int i = 0; i < lettersDrawn.size; i++) {
 
-            Pixmap downSampled = DownSample.downSample(lettersDrawn.get(i).getSample());
+            downSampled = lettersDrawn.get(i).getDownSample();
 
-            int index = 0;
-
-            for (int x = 0; x < downSampled.getWidth(); x++) {
+            for (int x = 0, index = 0; x < downSampled.getWidth(); x++) {
                 for (int y = 0; y < downSampled.getHeight(); y++, index++) {
 
                     int pixel = downSampled.getPixel(x, y);
