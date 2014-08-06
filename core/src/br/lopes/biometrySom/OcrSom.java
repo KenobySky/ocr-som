@@ -11,14 +11,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -36,7 +35,7 @@ public class OcrSom extends ApplicationAdapter {
 	private Logic logic;
 
 	private Stage stage;
-	private Pixmap canvasPixmap, samplePixmap;
+	private Pixmap canvasPixmap;
 	private Texture canvasTexture, sampleTexture;
 	private TextField name;
 	private List<Letter> letters;
@@ -60,10 +59,7 @@ public class OcrSom extends ApplicationAdapter {
 		canvasPixmap.fill();
 		canvasPixmap.setColor(Color.BLACK); // for drawing
 		canvasTexture = new Texture(canvasPixmap);
-		samplePixmap = new Pixmap(100, 100, Format.RGBA8888);
-		samplePixmap.setColor(Color.WHITE);
-		samplePixmap.fill();
-		sampleTexture = new Texture(samplePixmap);
+		sampleTexture = new Texture(Options.DOWNSAMPLE_WIDTH, Options.DOWNSAMPLE_HEIGHT, Format.RGBA8888);
 
 		final Image canvas = new Image(new TextureRegionDrawable(new TextureRegion(canvasTexture)));
 		Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin);
@@ -77,23 +73,16 @@ public class OcrSom extends ApplicationAdapter {
 		Button delete = new TextButton("Delete", skin);
 
 		canvas.addListener(new InputListener() {
-			float oldX;
-			float oldY;
-
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				oldX = x;
-				oldY = GeometryUtils.invertAxis(y, canvas.getHeight());
 				return true;
 			}
 
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
 				y = GeometryUtils.invertAxis(y, canvas.getHeight());
-				canvasPixmap.drawLine((int) oldX, (int) oldY, (int) x, (int) y);
+				canvasPixmap.fillCircle((int) x, (int) y, 20);
 				canvasTexture.draw(canvasPixmap, 0, 0);
-				oldX = x;
-				oldY = y;
 			}
 		});
 
@@ -116,56 +105,54 @@ public class OcrSom extends ApplicationAdapter {
 			}
 		});
 
-		train.addListener(new EventListener() {
+		train.addListener(new ClickListener() {
 			@Override
-			public boolean handle(Event event) {
+			public void clicked(InputEvent event, float x, float y) {
 				startTrain(Options.normalizeInput, Options.trainLearningMethod, Options.learnRate);
-				return false;
 			}
 		});
 
-		addLetter.addListener(new EventListener() {
+		addLetter.addListener(new ClickListener() {
 			@Override
-			public boolean handle(Event event) {
+			public void clicked(InputEvent event, float x, float y) {
 				letters.getItems().add(new Letter(canvasPixmap, name.getText()));
-				return true;
+				name.setText("");
 			}
 		});
 
-		recognize.addListener(new EventListener() {
+		recognize.addListener(new ClickListener() {
 			@Override
-			public boolean handle(Event event) {
+			public void clicked(InputEvent event, float x, float y) {
 				String recognizeLetter = recognizeLetter(canvasPixmap);
 				showMessage(recognizeLetter);
-				return true;
 			}
 		});
 
-		delete.addListener(new EventListener() {
+		delete.addListener(new ClickListener() {
 			@Override
-			public boolean handle(Event event) {
+			public void clicked(InputEvent event, float x, float y) {
 				int index = letters.getSelectedIndex();
 				if(index != -1)
 					letters.getItems().removeIndex(index).dispose();
-				return true;
 			}
 		});
 
 		Table table = new Table();
 		table.setFillParent(true);
-		table.defaults().expand().fillX();
+		table.defaults().expand().fill();
 		table.add(canvas).fill(false).colspan(2).row();
 		table.add(downsample);
 		table.add(clear).row();
-		table.add(sample).fill(false);
-		table.add(letters).row();
+		table.add(sample).fill(false).size(100);
+		table.add(new ScrollPane(letters)).row();
 		table.add(train);
 
 		Table addLetterTable = new Table();
-		addLetterTable.defaults().expand().fillX();
+		addLetterTable.defaults().expand().fill();
 		addLetterTable.add(name);
 		addLetterTable.add(addLetter);
 		table.add(addLetterTable).row();
+
 		table.add(recognize);
 		table.add(delete);
 
@@ -190,7 +177,6 @@ public class OcrSom extends ApplicationAdapter {
 		stage.dispose();
 		canvasPixmap.dispose();
 		canvasTexture.dispose();
-		samplePixmap.dispose();
 		sampleTexture.dispose();
 	}
 
