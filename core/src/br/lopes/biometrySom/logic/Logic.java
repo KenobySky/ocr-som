@@ -53,7 +53,7 @@ public class Logic {
     }
 
     public void printInfo(String info) {
-        System.out.println(info);
+        ocrSom.showMessage(info);
     }
 
     public String getLetter(int winnerNeuron) {

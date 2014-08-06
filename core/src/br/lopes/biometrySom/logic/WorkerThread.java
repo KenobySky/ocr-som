@@ -50,7 +50,7 @@ public class WorkerThread implements Runnable {
                     errorCount++;
                 }
 
-                System.out.println("LastError : " + lastError);
+                logic.printInfo("Training : Last Error = " + lastError);
 
                 System.out.println("Trainer.getBestError() " + trainer.getBestError());
 

@@ -11,6 +11,7 @@ public class Options {
     private static float learnRate;
     private static int MAX_ERROR_COUNT;
     private static boolean running = false;
+    private static boolean REMOVE_BORDERS;
 
     static {
         DOWNSAMPLE_WIDTH = 10;
@@ -19,7 +20,16 @@ public class Options {
         trainLearningMethod = LearningMethod.ADDITIVE;
         learnRate = 0.2f;
         MAX_ERROR_COUNT = 200;
+        running = false;
+        REMOVE_BORDERS = false;
+    }
 
+    public static boolean isREMOVE_BORDERS() {
+        return REMOVE_BORDERS;
+    }
+
+    public static void setREMOVE_BORDERS(boolean REMOVE_BORDERS) {
+        Options.REMOVE_BORDERS = REMOVE_BORDERS;
     }
 
     public static int getDOWNSAMPLE_WIDTH() {

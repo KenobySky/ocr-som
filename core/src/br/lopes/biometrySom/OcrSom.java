@@ -194,8 +194,9 @@ public class OcrSom extends ApplicationAdapter {
         sampleTexture.dispose();
     }
 
-    private void showMessage(String msg) {
+    public void showMessage(String msg) {
         if (msg != null && !msg.isEmpty()) {
+            System.out.println("Incoming Message :" + msg);
             //Show this in A console like in TSM project
             Gdx.app.log("Message", msg);
         }
