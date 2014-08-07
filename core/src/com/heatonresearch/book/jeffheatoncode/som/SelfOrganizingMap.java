@@ -2,19 +2,21 @@
  * Introduction to Neural Networks with Java, 2nd Edition
  * Copyright 2008 by Heaton Research, Inc. 
  * http://www.heatonresearch.com/books/java-neural-2/
- * 
+ *
  * ISBN13: 978-1-60439-008-7  	 
  * ISBN:   1-60439-008-5
- *   
+ *
  * This class is released under the:
  * GNU Lesser General Public License (LGPL)
  * http://www.gnu.org/copyleft/lesser.html
  */
+
 package com.heatonresearch.book.jeffheatoncode.som;
 
 import com.heatonresearch.book.jeffheatoncode.matrix.Matrix;
 import com.heatonresearch.book.jeffheatoncode.matrix.MatrixMath;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput.NormalizationType;
+
 import java.io.Serializable;
 
 //import com.heatonresearch.book.introneuralnet.neural.matrix.Matrix;
@@ -25,7 +27,7 @@ import java.io.Serializable;
  * SelfOrganizingMap: The Self Organizing Map, or Kohonen Neural Network, is a
  * special type of neural network that is used to classify input into groups.
  * The SOM makes use of unsupervised training.
- * 
+ *
  * @author Jeff Heaton
  * @version 2.1
  */
@@ -69,7 +71,7 @@ public class SelfOrganizingMap implements Serializable {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param inputCount
 	 *            Number of input neurons
 	 * @param outputCount
@@ -77,13 +79,11 @@ public class SelfOrganizingMap implements Serializable {
 	 * @param normalizationType
 	 *            The normalization type to use.
 	 */
-	public SelfOrganizingMap(final int inputCount, final int outputCount,
-			final NormalizationType normalizationType) {
+	public SelfOrganizingMap(final int inputCount, final int outputCount, final NormalizationType normalizationType) {
 
 		this.inputNeuronCount = inputCount;
 		this.outputNeuronCount = outputCount;
-		this.outputWeights = new Matrix(this.outputNeuronCount,
-				this.inputNeuronCount + 1);
+		this.outputWeights = new Matrix(this.outputNeuronCount, this.inputNeuronCount + 1);
 		this.output = new double[this.outputNeuronCount];
 		this.normalizationType = normalizationType;
 	}
@@ -139,14 +139,13 @@ public class SelfOrganizingMap implements Serializable {
 	/**
 	 * Determine the winner for the specified input. This is the number of the
 	 * winning neuron.
-	 * 
+	 *
 	 * @param input
 	 *            The input patter to present to the neural network.
 	 * @return The winning neuron.
 	 */
 	public int winner(final double input[]) {
-		final NormalizeInput normalizedInput = new NormalizeInput(input,
-				this.normalizationType);
+		final NormalizeInput normalizedInput = new NormalizeInput(input, this.normalizationType);
 		return winner(normalizedInput);
 	}
 
@@ -160,25 +159,23 @@ public class SelfOrganizingMap implements Serializable {
 		int win = 0;
 
 		double biggest = Double.MIN_VALUE;
-		for (int i = 0; i < this.outputNeuronCount; i++) {
+		for(int i = 0; i < this.outputNeuronCount; i++) {
 			final Matrix optr = this.outputWeights.getRow(i);
-			this.output[i] = MatrixMath
-					.dotProduct(input.getInputMatrix(), optr)
-					* input.getNormfac();
-			
-			this.output[i] = (this.output[i]+1.0)/2.0;
+			this.output[i] = MatrixMath.dotProduct(input.getInputMatrix(), optr) * input.getNormfac();
 
-			if (this.output[i] > biggest) {
+			this.output[i] = (this.output[i] + 1.0) / 2.0;
+
+			if(this.output[i] > biggest) {
 				biggest = this.output[i];
 				win = i;
 			}
-			
-			if( this.output[i] <0 ) {
-				this.output[i]=0;
+
+			if(this.output[i] < 0) {
+				this.output[i] = 0;
 			}
-			
-			if( this.output[i]>1 ) {
-				this.output[i]=1;
+
+			if(this.output[i] > 1) {
+				this.output[i] = 1;
 			}
 		}
 

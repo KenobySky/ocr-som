@@ -2,23 +2,23 @@
  * Introduction to Neural Networks with Java, 2nd Edition
  * Copyright 2008 by Heaton Research, Inc. 
  * http://www.heatonresearch.com/books/java-neural-2/
- * 
+ *
  * ISBN13: 978-1-60439-008-7  	 
  * ISBN:   1-60439-008-5
- *   
+ *
  * This class is released under the:
  * GNU Lesser General Public License (LGPL)
  * http://www.gnu.org/copyleft/lesser.html
  */
+
 package com.heatonresearch.book.jeffheatoncode.som;
 
 import com.heatonresearch.book.jeffheatoncode.matrix.Matrix;
 import com.heatonresearch.book.jeffheatoncode.matrix.MatrixMath;
 
-
 /**
  * NormalizeInput: Input into a Self Organizing Map must be normalized.
- * 
+ *
  * @author Jeff Heaton
  * @version 2.1
  */
@@ -28,9 +28,9 @@ public class NormalizeInput {
 	 * This class support two normalization types. Z-AXIS is the most commonly
 	 * used normalization type. Multiplicative is used over z-axis when the
 	 * values are in very close range.
-	 * 
+	 *
 	 * @author jheaton
-	 * 
+	 *
 	 */
 	public enum NormalizationType {
 		Z_AXIS, MULTIPLICATIVE
@@ -59,7 +59,7 @@ public class NormalizeInput {
 	/**
 	 * Normalize an input array into a matrix. The resulting matrix will have
 	 * one extra column that will be occupied by the synthetic input.
-	 * 
+	 *
 	 * @param input
 	 *            The input array to be normalized.
 	 * @param type
@@ -74,17 +74,16 @@ public class NormalizeInput {
 	/**
 	 * Create an input matrix that has enough space to hold the extra synthetic
 	 * input.
-	 * 
+	 *
 	 * @param pattern
 	 *            The input pattern to create.
 	 * @param extra
 	 *            The synthetic input.
 	 * @return A matrix that contains the input pattern and the synthetic input.
 	 */
-	protected Matrix createInputMatrix(final double pattern[],
-			final double extra) {
+	protected Matrix createInputMatrix(final double pattern[], final double extra) {
 		final Matrix result = new Matrix(1, pattern.length + 1);
-		for (int i = 0; i < pattern.length; i++) {
+		for(int i = 0; i < pattern.length; i++) {
 			result.set(0, i, pattern[i]);
 		}
 
@@ -120,7 +119,7 @@ public class NormalizeInput {
 	/**
 	 * Determine both the normalization factor and the synthetic input for the
 	 * given input.
-	 * 
+	 *
 	 * @param input
 	 *            The input to normalize.
 	 */
@@ -131,13 +130,13 @@ public class NormalizeInput {
 		len = Math.max(len, SelfOrganizingMap.VERYSMALL);
 		final int numInputs = input.length;
 
-		if (this.type == NormalizationType.MULTIPLICATIVE) {
+		if(this.type == NormalizationType.MULTIPLICATIVE) {
 			this.normfac = 1.0 / len;
 			this.synth = 0.0;
 		} else {
 			this.normfac = 1.0 / Math.sqrt(numInputs);
-			final double d = numInputs - Math.pow(len,2);
-			if (d > 0.0) {
+			final double d = numInputs - Math.pow(len, 2);
+			if(d > 0.0) {
 				this.synth = Math.sqrt(d) * this.normfac;
 			} else {
 				this.synth = 0;

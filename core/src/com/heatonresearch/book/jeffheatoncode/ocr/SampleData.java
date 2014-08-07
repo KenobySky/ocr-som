@@ -2,23 +2,23 @@
  * Introduction to Neural Networks with Java, 2nd Edition
  * Copyright 2008 by Heaton Research, Inc. 
  * http://www.heatonresearch.com/books/java-neural-2/
- * 
+ *
  * ISBN13: 978-1-60439-008-7  	 
  * ISBN:   1-60439-008-5
- *   
+ *
  * This class is released under the:
  * GNU Lesser General Public License (LGPL)
  * http://www.gnu.org/copyleft/lesser.html
  */
-package com.heatonresearch.book.jeffheatoncode.ocr;
 
+package com.heatonresearch.book.jeffheatoncode.ocr;
 
 /**
  * Chapter 12: OCR and the Self Organizing Map
- * 
+ *
  * SampleData: Holds sampled data that will be used to train
  * the neural network.
- * 
+ *
  * @author Jeff Heaton
  * @version 2.1
  */
@@ -36,7 +36,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * The constructor
-	 * 
+	 *
 	 * @param letter
 	 *            What letter this is
 	 * @param width
@@ -53,8 +53,8 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 	 * Clear the downsampled image
 	 */
 	public void clear() {
-		for (int x = 0; x < this.grid.length; x++) {
-			for (int y = 0; y < this.grid[0].length; y++) {
+		for(int x = 0; x < this.grid.length; x++) {
+			for(int y = 0; y < this.grid[0].length; y++) {
 				this.grid[x][y] = false;
 			}
 		}
@@ -62,7 +62,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Create a copy of this sample
-	 * 
+	 *
 	 * @return A copy of this sample
 	 */
 	@Override
@@ -70,10 +70,9 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	{
 
-		final SampleData obj = new SampleData(this.letter, getWidth(),
-				getHeight());
-		for (int y = 0; y < getHeight(); y++) {
-			for (int x = 0; x < getWidth(); x++) {
+		final SampleData obj = new SampleData(this.letter, getWidth(), getHeight());
+		for(int y = 0; y < getHeight(); y++) {
+			for(int x = 0; x < getWidth(); x++) {
 				obj.setData(x, y, getData(x, y));
 			}
 		}
@@ -82,7 +81,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Compare this sample to another, used for sorting.
-	 * 
+	 *
 	 * @param o
 	 *            The object being compared against.
 	 * @return Same as String.compareTo
@@ -90,7 +89,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	public int compareTo(final SampleData o) {
 		final SampleData obj = o;
-		if (this.getLetter() > obj.getLetter()) {
+		if(this.getLetter() > obj.getLetter()) {
 			return 1;
 		} else {
 			return -1;
@@ -99,7 +98,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Get a pixel from the sample.
-	 * 
+	 *
 	 * @param x
 	 *            The x coordinate
 	 * @param y
@@ -112,7 +111,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Get the height of the down sampled image.
-	 * 
+	 *
 	 * @return The height of the downsampled image.
 	 */
 	public int getHeight() {
@@ -121,7 +120,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Get the letter that this sample represents.
-	 * 
+	 *
 	 * @return The letter that this sample represents.
 	 */
 	public char getLetter() {
@@ -130,7 +129,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Get the width of the downsampled image.
-	 * 
+	 *
 	 * @return The width of the downsampled image
 	 */
 	public int getWidth() {
@@ -139,7 +138,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Set one pixel of sample data.
-	 * 
+	 *
 	 * @param x
 	 *            The x coordinate
 	 * @param y
@@ -153,7 +152,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Set the letter that this sample represents.
-	 * 
+	 *
 	 * @param letter
 	 *            The letter that this sample represents.
 	 */
@@ -163,7 +162,7 @@ public class SampleData implements Comparable<SampleData>, Cloneable {
 
 	/**
 	 * Convert this sample to a string.
-	 * 
+	 *
 	 * @return Just returns the letter that this sample is assigned to.
 	 */
 	@Override

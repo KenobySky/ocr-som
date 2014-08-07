@@ -2,17 +2,19 @@
  * Introduction to Neural Networks with Java, 2nd Edition
  * Copyright 2008 by Heaton Research, Inc. 
  * http://www.heatonresearch.com/books/java-neural-2/
- * 
+ *
  * ISBN13: 978-1-60439-008-7  	 
  * ISBN:   1-60439-008-5
- *   
+ *
  * This class is released under the:
  * GNU Lesser General Public License (LGPL)
  * http://www.gnu.org/copyleft/lesser.html
  */
+
 package com.heatonresearch.book.jeffheatoncode.matrix;
 
 import com.heatonresearch.book.jeffheatoncode.exception.MatrixError;
+
 import java.io.Serializable;
 
 //import com.heatonresearch.book.introneuralnet.neural.exception.MatrixError;
@@ -22,7 +24,7 @@ import java.io.Serializable;
  * math is very important to neural network processing.  Many
  * of the classes developed in this book will make use of the
  * matrix classes in this package.
- *  
+ *
  * @author Jeff Heaton
  * @version 2.1
  */
@@ -35,7 +37,7 @@ public class Matrix implements Cloneable, Serializable {
 
 	public static Matrix createColumnMatrix(final double input[]) {
 		final double d[][] = new double[input.length][1];
-		for (int row = 0; row < d.length; row++) {
+		for(int row = 0; row < d.length; row++) {
 			d[row][0] = input[row];
 		}
 		return new Matrix(d);
@@ -51,9 +53,9 @@ public class Matrix implements Cloneable, Serializable {
 
 	public Matrix(final boolean sourceMatrix[][]) {
 		this.matrix = new double[sourceMatrix.length][sourceMatrix[0].length];
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
-				if (sourceMatrix[r][c]) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
+				if(sourceMatrix[r][c]) {
 					this.set(r, c, 1);
 				} else {
 					this.set(r, c, -1);
@@ -64,8 +66,8 @@ public class Matrix implements Cloneable, Serializable {
 
 	public Matrix(final double sourceMatrix[][]) {
 		this.matrix = new double[sourceMatrix.length][sourceMatrix[0].length];
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
 				this.set(r, c, sourceMatrix[r][c]);
 			}
 		}
@@ -82,8 +84,8 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	public void clear() {
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
 				set(r, c, 0);
 			}
 		}
@@ -100,21 +102,20 @@ public class Matrix implements Cloneable, Serializable {
 
 	public boolean equals(final Matrix matrix, int precision) {
 
-		if (precision < 0) {
+		if(precision < 0) {
 			throw new MatrixError("Precision can't be a negative number.");
 		}
 
 		final double test = Math.pow(10.0, precision);
-		if (Double.isInfinite(test) || (test > Long.MAX_VALUE)) {
-			throw new MatrixError("Precision of " + precision
-					+ " decimal places is not supported.");
+		if(Double.isInfinite(test) || (test > Long.MAX_VALUE)) {
+			throw new MatrixError("Precision of " + precision + " decimal places is not supported.");
 		}
 
 		precision = (int) Math.pow(10, precision);
 
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
-				if ((long) (get(r, c) * precision) != (long) (matrix.get(r, c) * precision)) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
+				if((long) (get(r, c) * precision) != (long) (matrix.get(r, c) * precision)) {
 					return false;
 				}
 			}
@@ -124,15 +125,15 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param array
 	 * @param index
 	 * @return The new index after this matrix has been read.
 	 */
 	public int fromPackedArray(final Double[] array, int index) {
 
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
 				this.matrix[r][c] = array[index++];
 			}
 		}
@@ -146,14 +147,13 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	public Matrix getCol(final int col) {
-		if (col > getCols()) {
-			throw new MatrixError("Can't get column #" + col
-					+ " because it does not exist.");
+		if(col > getCols()) {
+			throw new MatrixError("Can't get column #" + col + " because it does not exist.");
 		}
 
 		final double newMatrix[][] = new double[getRows()][1];
 
-		for (int row = 0; row < getRows(); row++) {
+		for(int row = 0; row < getRows(); row++) {
 			newMatrix[row][0] = this.matrix[row][col];
 		}
 
@@ -165,14 +165,13 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	public Matrix getRow(final int row) {
-		if (row > getRows()) {
-			throw new MatrixError("Can't get row #" + row
-					+ " because it does not exist.");
+		if(row > getRows()) {
+			throw new MatrixError("Can't get row #" + row + " because it does not exist.");
 		}
 
 		final double newMatrix[][] = new double[1][getCols()];
 
-		for (int col = 0; col < getCols(); col++) {
+		for(int col = 0; col < getCols(); col++) {
 			newMatrix[0][col] = this.matrix[row][col];
 		}
 
@@ -184,7 +183,7 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	public boolean isVector() {
-		if (getRows() == 1) {
+		if(getRows() == 1) {
 			return true;
 		} else {
 			return getCols() == 1;
@@ -192,9 +191,9 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	public boolean isZero() {
-		for (int row = 0; row < getRows(); row++) {
-			for (int col = 0; col < getCols(); col++) {
-				if (this.matrix[row][col] != 0) {
+		for(int row = 0; row < getRows(); row++) {
+			for(int col = 0; col < getCols(); col++) {
+				if(this.matrix[row][col] != 0) {
 					return false;
 				}
 			}
@@ -203,8 +202,8 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	public void ramdomize(final double min, final double max) {
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
 				this.matrix[r][c] = (Math.random() * (max - min)) + min;
 			}
 		}
@@ -212,9 +211,8 @@ public class Matrix implements Cloneable, Serializable {
 
 	public void set(final int row, final int col, final double value) {
 		validate(row, col);
-		if (Double.isInfinite(value) || Double.isNaN(value)) {
-			throw new MatrixError("Trying to assign invalud number to matrix: "
-					+ value);
+		if(Double.isInfinite(value) || Double.isNaN(value)) {
+			throw new MatrixError("Trying to assign invalud number to matrix: " + value);
 		}
 		this.matrix[row][col] = value;
 	}
@@ -225,8 +223,8 @@ public class Matrix implements Cloneable, Serializable {
 
 	public double sum() {
 		double result = 0;
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
 				result += this.matrix[r][c];
 			}
 		}
@@ -237,8 +235,8 @@ public class Matrix implements Cloneable, Serializable {
 		final Double result[] = new Double[getRows() * getCols()];
 
 		int index = 0;
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getCols(); c++) {
+		for(int r = 0; r < getRows(); r++) {
+			for(int c = 0; c < getCols(); c++) {
 				result[index++] = this.matrix[r][c];
 			}
 		}
@@ -247,14 +245,12 @@ public class Matrix implements Cloneable, Serializable {
 	}
 
 	private void validate(final int row, final int col) {
-		if ((row >= getRows()) || (row < 0)) {
-			throw new MatrixError("The row:" + row + " is out of range:"
-					+ getRows());
+		if((row >= getRows()) || (row < 0)) {
+			throw new MatrixError("The row:" + row + " is out of range:" + getRows());
 		}
 
-		if ((col >= getCols()) || (col < 0)) {
-			throw new MatrixError("The col:" + col + " is out of range:"
-					+ getCols());
+		if((col >= getCols()) || (col < 0)) {
+			throw new MatrixError("The col:" + col + " is out of range:" + getCols());
 		}
 	}
 

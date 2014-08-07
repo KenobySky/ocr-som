@@ -43,9 +43,9 @@ public class OcrSom extends ApplicationAdapter {
 	private TextField name;
 	private List<Letter> letters;
 
-    /** Determines if a downsampling is required or not.
+	/** Determines if a downsampling is required or not.
 	 *  True if {@link #canvasPixmap} changed since the last time {@link #downSample()} was called. */
-    private boolean sampleDirty = true;
+	private boolean sampleDirty = true;
 
 	//View Methods
 	@Override
@@ -87,7 +87,7 @@ public class OcrSom extends ApplicationAdapter {
 				y = GeometryUtils.invertAxis(y, canvas.getHeight());
 				canvasPixmap.fillCircle((int) x, (int) y, 20);
 				canvasTexture.draw(canvasPixmap, 0, 0);
-                sampleDirty = true;
+				sampleDirty = true;
 			}
 		});
 
@@ -105,13 +105,14 @@ public class OcrSom extends ApplicationAdapter {
 				canvasPixmap.fill();
 				canvasTexture.draw(canvasPixmap, 0, 0);
 				canvasPixmap.setColor(Color.BLACK);
-                sampleDirty = true;
+				sampleDirty = true;
 			}
 		});
 
 		options.addListener(new ClickListener() {
 			Window window = new Window("Options", skin);
 			Button close = new TextButton("close", skin);
+
 			{
 				window.setModal(true);
 				window.setColor(1, 1, 1, 0);
@@ -241,52 +242,52 @@ public class OcrSom extends ApplicationAdapter {
 
 	//Logic Methods
 	private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
-        int inputCount = (Options.getDownsampleWidth() * Options.getDownsampleHeight());
-        int outputCount = letters.getItems().size;
+		int inputCount = (Options.getDownsampleWidth() * Options.getDownsampleHeight());
+		int outputCount = letters.getItems().size;
 
-        double[][] train = new double[letters.getItems().size][inputCount];
-        //Each Line is a letter representation in pixel
-        //Each Column is a pixel
-        Pixmap downSampled;
-        for (int i = 0; i < letters.getItems().size; i++) {
-            downSampled = letters.getItems().get(i).getDownSample();
-            for (int x = 0, index = 0; x < downSampled.getWidth(); x++) {
-                for (int y = 0; y < downSampled.getHeight(); y++) {
-                    int pixel = downSampled.getPixel(x, y);
-                    train[i][index] = pixel;
-                    index++;
-                }
-            }
+		double[][] train = new double[letters.getItems().size][inputCount];
+		//Each Line is a letter representation in pixel
+		//Each Column is a pixel
+		Pixmap downSampled;
+		for(int i = 0; i < letters.getItems().size; i++) {
+			downSampled = letters.getItems().get(i).getDownSample();
+			for(int x = 0, index = 0; x < downSampled.getWidth(); x++) {
+				for(int y = 0; y < downSampled.getHeight(); y++) {
+					int pixel = downSampled.getPixel(x, y);
+					train[i][index] = pixel;
+					index++;
+				}
+			}
 
-        }
+		}
 
-        logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
-    }
+		logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
+	}
 
 	//Recognize Methods
 	//Returns the Recognize Letter
-    public String recognizeLetter(Pixmap letterDrawnImage) {
-        Pixmap downSampled = DownSample.downSample(letterDrawnImage);
+	public String recognizeLetter(Pixmap letterDrawnImage) {
+		Pixmap downSampled = DownSample.downSample(letterDrawnImage);
 
-        double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
-        int index = 0;
-        for (int x = 0; x < downSampled.getWidth(); x++) {
-            for (int y = 0; y < downSampled.getHeight(); y++) {
-                int pixel = downSampled.getPixel(x, y);
-                input[index] = pixel;
-                index++;
-            }
-        }
+		double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
+		int index = 0;
+		for(int x = 0; x < downSampled.getWidth(); x++) {
+			for(int y = 0; y < downSampled.getHeight(); y++) {
+				int pixel = downSampled.getPixel(x, y);
+				input[index] = pixel;
+				index++;
+			}
+		}
 
-        int winner = logic.getSom().winner(input);
+		int winner = logic.getSom().winner(input);
 
-        for (int i = 0; i < logic.getMap().size(); i++) {
-            if (logic.getMap().get(i).getWinnerNeuronIndex() == winner)
+		for(int i = 0; i < logic.getMap().size(); i++) {
+			if(logic.getMap().get(i).getWinnerNeuronIndex() == winner)
 				return logic.getMap().get(i).getLetter();
-        }
+		}
 
-        return "?";
-    }
+		return "?";
+	}
 
 	// getters and setters
 

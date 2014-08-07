@@ -2,14 +2,15 @@
  * Introduction to Neural Networks with Java, 2nd Edition
  * Copyright 2008 by Heaton Research, Inc. 
  * http://www.heatonresearch.com/books/java-neural-2/
- * 
+ *
  * ISBN13: 978-1-60439-008-7  	 
  * ISBN:   1-60439-008-5
- *   
+ *
  * This class is released under the:
  * GNU Lesser General Public License (LGPL)
  * http://www.gnu.org/copyleft/lesser.html
  */
+
 package com.heatonresearch.book.jeffheatoncode.ocr;
 
 import java.awt.AWTEvent;
@@ -23,17 +24,17 @@ import javax.swing.JPanel;
 
 /**
  * Chapter 12: OCR and the Self Organizing Map
- * 
+ *
  * Entry: GUI element to allow the user to enter a character by 
  * drawing it.
- * 
+ *
  * @author Jeff Heaton
  * @version 2.1
  */
 public class Entry extends JPanel {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 656936515012546346L;
 
@@ -101,8 +102,7 @@ public class Entry extends JPanel {
 	 * The constructor.
 	 */
 	Entry() {
-		enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK
-				| AWTEvent.MOUSE_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
+		enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
 	}
 
 	/**
@@ -122,8 +122,7 @@ public class Entry extends JPanel {
 		final int w = this.entryImage.getWidth(this);
 		final int h = this.entryImage.getHeight(this);
 
-		final PixelGrabber grabber = new PixelGrabber(this.entryImage, 0, 0, w,
-				h, true);
+		final PixelGrabber grabber = new PixelGrabber(this.entryImage, 0, 0, w, h, true);
 		try {
 
 			grabber.grabPixels();
@@ -133,14 +132,12 @@ public class Entry extends JPanel {
 			// now downsample
 			final SampleData data = this.sample.getData();
 
-			this.ratioX = (double) (this.downSampleRight - this.downSampleLeft)
-					/ (double) data.getWidth();
-			this.ratioY = (double) (this.downSampleBottom - this.downSampleTop)
-					/ (double) data.getHeight();
+			this.ratioX = (double) (this.downSampleRight - this.downSampleLeft) / (double) data.getWidth();
+			this.ratioY = (double) (this.downSampleBottom - this.downSampleTop) / (double) data.getHeight();
 
-			for (int y = 0; y < data.getHeight(); y++) {
-				for (int x = 0; x < data.getWidth(); x++) {
-					if (downSampleRegion(x, y)) {
+			for(int y = 0; y < data.getHeight(); y++) {
+				for(int x = 0; x < data.getWidth(); x++) {
+					if(downSampleRegion(x, y)) {
 						data.setData(x, y, true);
 					} else {
 						data.setData(x, y, false);
@@ -150,13 +147,13 @@ public class Entry extends JPanel {
 
 			this.sample.repaint();
 			repaint();
-		} catch (final InterruptedException e) {
+		} catch(final InterruptedException e) {
 		}
 	}
 
 	/**
 	 * Called to downsample a quadrant of the image.
-	 * 
+	 *
 	 * @param x
 	 *            The x coordinate of the resulting downsample.
 	 * @param y
@@ -170,11 +167,11 @@ public class Entry extends JPanel {
 		final int endX = (int) (startX + this.ratioX);
 		final int endY = (int) (startY + this.ratioY);
 
-		for (int yy = startY; yy <= endY; yy++) {
-			for (int xx = startX; xx <= endX; xx++) {
+		for(int yy = startY; yy <= endY; yy++) {
+			for(int xx = startX; xx <= endX; xx++) {
 				final int loc = xx + (yy * w);
 
-				if (this.pixelMap[loc] != -1) {
+				if(this.pixelMap[loc] != -1) {
 					return true;
 				}
 			}
@@ -186,7 +183,7 @@ public class Entry extends JPanel {
 	/**
 	 * This method is called to automatically crop the image so that whitespace
 	 * is removed.
-	 * 
+	 *
 	 * @param w
 	 *            The width of the image.
 	 * @param h
@@ -194,31 +191,31 @@ public class Entry extends JPanel {
 	 */
 	protected void findBounds(final int w, final int h) {
 		// top line
-		for (int y = 0; y < h; y++) {
-			if (!hLineClear(y)) {
+		for(int y = 0; y < h; y++) {
+			if(!hLineClear(y)) {
 				this.downSampleTop = y;
 				break;
 			}
 
 		}
 		// bottom line
-		for (int y = h - 1; y >= 0; y--) {
-			if (!hLineClear(y)) {
+		for(int y = h - 1; y >= 0; y--) {
+			if(!hLineClear(y)) {
 				this.downSampleBottom = y;
 				break;
 			}
 		}
 		// left line
-		for (int x = 0; x < w; x++) {
-			if (!vLineClear(x)) {
+		for(int x = 0; x < w; x++) {
+			if(!vLineClear(x)) {
 				this.downSampleLeft = x;
 				break;
 			}
 		}
 
 		// right line
-		for (int x = w - 1; x >= 0; x--) {
-			if (!vLineClear(x)) {
+		for(int x = w - 1; x >= 0; x--) {
+			if(!vLineClear(x)) {
 				this.downSampleRight = x;
 				break;
 			}
@@ -227,7 +224,7 @@ public class Entry extends JPanel {
 
 	/**
 	 * Get the down sample component to be used with this component.
-	 * 
+	 *
 	 * @return The down sample component.
 	 */
 	public Sample getSample() {
@@ -237,15 +234,15 @@ public class Entry extends JPanel {
 	/**
 	 * This method is called internally to see if there are any pixels in the
 	 * given scan line. This method is used to perform autocropping.
-	 * 
+	 *
 	 * @param y
 	 *            The horizontal line to scan.
 	 * @return True if there were any pixels in this horizontal line.
 	 */
 	protected boolean hLineClear(final int y) {
 		final int w = this.entryImage.getWidth(this);
-		for (int i = 0; i < w; i++) {
-			if (this.pixelMap[(y * w) + i] != -1) {
+		for(int i = 0; i < w; i++) {
+			if(this.pixelMap[(y * w) + i] != -1) {
 				return false;
 			}
 		}
@@ -264,34 +261,32 @@ public class Entry extends JPanel {
 
 	/**
 	 * Paint the drawn image and cropping box (if active).
-	 * 
+	 *
 	 * @param g
 	 *            The graphics context
 	 */
 	@Override
 	public void paint(final Graphics g) {
-		if (this.entryImage == null) {
+		if(this.entryImage == null) {
 			initImage();
 		}
 		g.drawImage(this.entryImage, 0, 0, this);
 		g.setColor(Color.black);
 		g.drawRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.red);
-		g.drawRect(this.downSampleLeft, this.downSampleTop,
-				this.downSampleRight - this.downSampleLeft,
-				this.downSampleBottom - this.downSampleTop);
+		g.drawRect(this.downSampleLeft, this.downSampleTop, this.downSampleRight - this.downSampleLeft, this.downSampleBottom - this.downSampleTop);
 
 	}
 
 	/**
 	 * Process messages.
-	 * 
+	 *
 	 * @param e
 	 *            The event.
 	 */
 	@Override
 	protected void processMouseEvent(final MouseEvent e) {
-		if (e.getID() != MouseEvent.MOUSE_PRESSED) {
+		if(e.getID() != MouseEvent.MOUSE_PRESSED) {
 			return;
 		}
 		this.lastX = e.getX();
@@ -300,13 +295,13 @@ public class Entry extends JPanel {
 
 	/**
 	 * Process messages.
-	 * 
+	 *
 	 * @param e
 	 *            The event.
 	 */
 	@Override
 	protected void processMouseMotionEvent(final MouseEvent e) {
-		if (e.getID() != MouseEvent.MOUSE_DRAGGED) {
+		if(e.getID() != MouseEvent.MOUSE_DRAGGED) {
 			return;
 		}
 
@@ -320,7 +315,7 @@ public class Entry extends JPanel {
 	/**
 	 * Set the sample control to use. The sample control displays a downsampled
 	 * version of the character.
-	 * 
+	 *
 	 * @param s
 	 */
 	public void setSample(final Sample s) {
@@ -329,7 +324,7 @@ public class Entry extends JPanel {
 
 	/**
 	 * This method is called to determine ....
-	 * 
+	 *
 	 * @param x
 	 *            The vertical line to scan.
 	 * @return True if there are any pixels in the specified vertical line.
@@ -337,8 +332,8 @@ public class Entry extends JPanel {
 	protected boolean vLineClear(final int x) {
 		final int w = this.entryImage.getWidth(this);
 		final int h = this.entryImage.getHeight(this);
-		for (int i = 0; i < h; i++) {
-			if (this.pixelMap[(i * w) + x] != -1) {
+		for(int i = 0; i < h; i++) {
+			if(this.pixelMap[(i * w) + x] != -1) {
 				return false;
 			}
 		}

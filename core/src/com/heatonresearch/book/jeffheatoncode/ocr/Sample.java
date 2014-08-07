@@ -2,25 +2,27 @@
  * Introduction to Neural Networks with Java, 2nd Edition
  * Copyright 2008 by Heaton Research, Inc. 
  * http://www.heatonresearch.com/books/java-neural-2/
- * 
+ *
  * ISBN13: 978-1-60439-008-7  	 
  * ISBN:   1-60439-008-5
- *   
+ *
  * This class is released under the:
  * GNU Lesser General Public License (LGPL)
  * http://www.gnu.org/copyleft/lesser.html
  */
+
 package com.heatonresearch.book.jeffheatoncode.ocr;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+
 /**
  * Chapter 12: OCR and the Self Organizing Map
- * 
+ *
  * Sample: GUI element that displays sampled data.
- * 
+ *
  * @author Jeff Heaton
  * @version 2.1
  */
@@ -37,7 +39,7 @@ public class Sample extends JPanel {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param width
 	 *            The width of the downsampled image
 	 * @param height
@@ -49,7 +51,7 @@ public class Sample extends JPanel {
 
 	/**
 	 * The image data object.
-	 * 
+	 *
 	 * @return The image data object.
 	 */
 	SampleData getData() {
@@ -62,7 +64,7 @@ public class Sample extends JPanel {
 	 */
 	@Override
 	public void paint(final Graphics g) {
-		if (this.data == null) {
+		if(this.data == null) {
 			return;
 		}
 
@@ -74,16 +76,16 @@ public class Sample extends JPanel {
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		g.setColor(Color.black);
-		for (y = 0; y < this.data.getHeight(); y++) {
+		for(y = 0; y < this.data.getHeight(); y++) {
 			g.drawLine(0, y * vcell, getWidth(), y * vcell);
 		}
-		for (x = 0; x < this.data.getWidth(); x++) {
+		for(x = 0; x < this.data.getWidth(); x++) {
 			g.drawLine(x * hcell, 0, x * hcell, getHeight());
 		}
 
-		for (y = 0; y < this.data.getHeight(); y++) {
-			for (x = 0; x < this.data.getWidth(); x++) {
-				if (this.data.getData(x, y)) {
+		for(y = 0; y < this.data.getHeight(); y++) {
+			for(x = 0; x < this.data.getWidth(); x++) {
+				if(this.data.getData(x, y)) {
 					g.fillRect(x * hcell, y * vcell, hcell, vcell);
 				}
 			}
@@ -96,7 +98,7 @@ public class Sample extends JPanel {
 
 	/**
 	 * Assign a new image data object.
-	 * 
+	 *
 	 * @param data
 	 *            The image data object.
 	 */
