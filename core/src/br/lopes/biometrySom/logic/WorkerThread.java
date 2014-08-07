@@ -1,14 +1,14 @@
 package br.lopes.biometrySom.logic;
 
+import java.util.ArrayList;
+
 import br.lopes.biometrySom.Options;
-import br.lopes.biometrySom.images.DownSample;
 import br.lopes.biometrySom.images.Letter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
 import com.heatonresearch.book.jeffheatoncode.som.SelfOrganizingMap;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
-
-import java.util.ArrayList;
 
 public class WorkerThread implements Runnable {
 
@@ -51,17 +51,14 @@ public class WorkerThread implements Runnable {
 					errorCount++;
 				}
 
-				logic.printInfo("Training : Last Error = " + lastError);
-
-				System.out.println("Trainer.getBestError() " + trainer.getBestError());
-
-				System.out.println("Error Count = " + errorCount);
+				// logic.printInfo("Training : Last Error = " + lastError);
+				Gdx.app.debug("WorkerThread", "Trainer.getBestError() " + trainer.getBestError());
+				Gdx.app.debug("WorkerThread", "Error Count = " + errorCount);
 
 				if(!Options.isThreadRunning()) {
-					System.out.println("Warning : Breaking Thread during inner loop!");
+					Gdx.app.debug("WorkerThread", "Warning : Breaking Thread during inner loop!");
 					break;
 				}
-
 			}
 
 			logic.printInfo("Finished Training SOM - Commencing Mapping...");

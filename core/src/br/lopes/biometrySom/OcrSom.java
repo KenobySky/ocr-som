@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -42,6 +43,8 @@ public class OcrSom extends ApplicationAdapter {
 	private Texture canvasTexture, sampleTexture;
 	private TextField name;
 	private List<Letter> letters;
+	private Label log;
+	private ScrollPane logPane;
 
 	/** Determines if a downsampling is required or not.
 	 *  True if {@link #canvasPixmap} changed since the last time {@link #downSample()} was called. */
@@ -57,6 +60,7 @@ public class OcrSom extends ApplicationAdapter {
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
 
+		log = new Label("", skin);
 		canvasPixmap = new Pixmap(400, 400, Format.RGBA8888);
 		canvasPixmap.setColor(Color.WHITE);
 		canvasPixmap.fill();
@@ -148,6 +152,10 @@ public class OcrSom extends ApplicationAdapter {
 		addLetter.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				if(name.getText().isEmpty()) {
+					showMessage("Please enter a name for the letter.");
+					return;
+				}
 				if(sampleDirty)
 					downSample();
 				letters.getItems().add(new Letter(canvasPixmap, samplePixmap, name.getText()));
@@ -197,7 +205,8 @@ public class OcrSom extends ApplicationAdapter {
 		table.add(name);
 		table.add(addLetter).row();
 		table.add(recognize);
-		table.add(delete).colspan(2);
+		table.add(delete).colspan(2).row();
+		table.add(logPane = new ScrollPane(log)).height(log.getStyle().font.getLineHeight() * 3).colspan(3);
 
 		stage.addActor(table);
 	}
@@ -208,6 +217,11 @@ public class OcrSom extends ApplicationAdapter {
 
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
+
+		if(scrollLog) {
+			logPane.setScrollPercentY(1);
+			scrollLog = false;
+		}
 	}
 
 	@Override
@@ -233,16 +247,20 @@ public class OcrSom extends ApplicationAdapter {
 		sampleDirty = false;
 	}
 
+	/** if {@link #logPane} should scroll all the way down */
+	boolean scrollLog;
+
 	public void showMessage(String msg) {
 		if(msg != null && !msg.isEmpty()) {
-			//Show this in A console like in TSM project
 			Gdx.app.log("Message", msg);
+			log.setText(log.getText() + "\n" + msg);
+			scrollLog = true;
 		}
 	}
 
 	//Logic Methods
 	private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
-		int inputCount = (Options.getDownsampleWidth() * Options.getDownsampleHeight());
+		int inputCount = Options.getDownsampleWidth() * Options.getDownsampleHeight();
 		int outputCount = letters.getItems().size;
 
 		double[][] train = new double[letters.getItems().size][inputCount];
