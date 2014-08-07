@@ -1,13 +1,12 @@
 package br.lopes.biometrySom.logic;
 
+import java.util.ArrayList;
+
 import br.lopes.biometrySom.OcrSom;
 import br.lopes.biometrySom.Options;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
-import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput.NormalizationType;
 import com.heatonresearch.book.jeffheatoncode.som.SelfOrganizingMap;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;
-import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap.LearningMethod;
-import java.util.ArrayList;
 
 public class Logic {
 
@@ -17,14 +16,9 @@ public class Logic {
     //public boolean runningThread;
     private SelfOrganizingMap som;
     private TrainSelfOrganizingMap trainer;
-    //inner Som Variables
-    private NormalizationType normalizationType;
-    private LearningMethod learningMethod;
 
     //Som Thread
     private Thread workerThread;
-
-    //
     private ArrayList<Map> map;
 
     public Logic(OcrSom mv) {
@@ -38,7 +32,7 @@ public class Logic {
             Options.setThreadRunning(true);
         }
 
-        workerThread = new Thread(new WorkerThread(this, trainer, som, 2000));
+        workerThread = new Thread(new WorkerThread(this, trainer, som, Options.getMaxErrorCount()));
         workerThread.start();
 
     }

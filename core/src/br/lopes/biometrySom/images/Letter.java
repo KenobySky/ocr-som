@@ -7,11 +7,13 @@ public class Letter implements Disposable {
 
     private String name;
     private Pixmap sample;
+    private Pixmap downSample;
 
-    public Letter(Pixmap sample, String name) {
+    public Letter(Pixmap sample, Pixmap downSample, String name) {
         this.sample = new Pixmap(sample.getWidth(), sample.getHeight(), sample.getFormat());
         this.sample.drawPixmap(sample, 0, 0);
         this.name = name;
+        this.downSample = downSample;
     }
 
     /**
@@ -22,9 +24,13 @@ public class Letter implements Disposable {
         sample.dispose();
     }
 
-	// getters and setters
+    // getters and setters
     public String getName() {
         return name;
+    }
+
+    public Pixmap getDownSample() {
+        return downSample;
     }
 
     public Pixmap getSample() {

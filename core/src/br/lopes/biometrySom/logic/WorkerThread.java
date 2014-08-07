@@ -17,7 +17,7 @@ public class WorkerThread implements Runnable {
     private Logic logic;
 
     //Variables
-    private int MAX_ERROR_COUNT = 2000;
+    private int MAX_ERROR_COUNT;
     private int retry = 0;
     private double totalError, bestError;
 
@@ -79,16 +79,12 @@ public class WorkerThread implements Runnable {
 
         for (int i = 0; i < lettersDrawn.size; i++) {
 
-            Pixmap downSampled = DownSample.downSample(lettersDrawn.get(i).getSample());
+            Pixmap downSampled = lettersDrawn.get(i).getDownSample();
 
-            int index = 0;
-
-            for (int x = 0; x < downSampled.getWidth(); x++) {
+            for (int x = 0, index = 0; x < downSampled.getWidth(); x++) {
                 for (int y = 0; y < downSampled.getHeight(); y++, index++) {
-
                     int pixel = downSampled.getPixel(x, y);
                     input[index] = pixel;
-
                 }
             }
             map.add(new Map(som.winner(input), lettersDrawn.get(i).getName()));

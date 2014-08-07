@@ -38,10 +38,14 @@ public class OcrSom extends ApplicationAdapter {
 	private Logic logic = new Logic(this);
 
 	private Stage stage;
-	private Pixmap canvasPixmap;
+	private Pixmap canvasPixmap, samplePixmap;
 	private Texture canvasTexture, sampleTexture;
 	private TextField name;
 	private List<Letter> letters;
+
+    /** Determines if a downsampling is required or not.
+	 *  True if {@link #canvasPixmap} changed since the last time {@link #downSample()} was called. */
+    private boolean sampleDirty = true;
 
 	//View Methods
 	@Override
@@ -58,7 +62,8 @@ public class OcrSom extends ApplicationAdapter {
 		canvasPixmap.fill();
 		canvasPixmap.setColor(Color.BLACK); // for drawing
 		canvasTexture = new Texture(canvasPixmap);
-		sampleTexture = new Texture(Options.getDownsampleWidth(), Options.getDownsampleHeight(), Format.RGBA8888);
+		samplePixmap = new Pixmap(Options.getDownsampleWidth(), Options.getDownsampleHeight(), Format.RGBA8888);
+		sampleTexture = new Texture(samplePixmap);
 
 		final Image canvas = new Image(new TextureRegionDrawable(new TextureRegion(canvasTexture)));
 		Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin), options = new TextButton("Options", skin);
@@ -82,15 +87,14 @@ public class OcrSom extends ApplicationAdapter {
 				y = GeometryUtils.invertAxis(y, canvas.getHeight());
 				canvasPixmap.fillCircle((int) x, (int) y, 20);
 				canvasTexture.draw(canvasPixmap, 0, 0);
+                sampleDirty = true;
 			}
 		});
 
 		downsample.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Pixmap sampled = DownSample.downSample(canvasPixmap);
-				sampleTexture.draw(sampled, 0, 0);
-				sampled.dispose();
+				downSample();
 			}
 		});
 
@@ -101,6 +105,7 @@ public class OcrSom extends ApplicationAdapter {
 				canvasPixmap.fill();
 				canvasTexture.draw(canvasPixmap, 0, 0);
 				canvasPixmap.setColor(Color.BLACK);
+                sampleDirty = true;
 			}
 		});
 
@@ -117,10 +122,10 @@ public class OcrSom extends ApplicationAdapter {
 				close.addListener(new ClickListener() {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
-						int oldDSWidth = Options.getDownsampleWidth(), oldDSHeight = Options.getDownsampleHeight();
+						// int oldDSWidth = Options.getDownsampleWidth(), oldDSHeight = Options.getDownsampleHeight();
 						window.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.removeActor()));
-						// recreate sampleTexture if necessary
-						if(Options.getDownsampleWidth() != oldDSWidth || Options.getDownsampleHeight() != oldDSHeight);
+						// TODO recreate sampleTexture if necessary
+						// if(Options.getDownsampleWidth() != oldDSWidth || Options.getDownsampleHeight() != oldDSHeight);
 					}
 				});
 			}
@@ -142,7 +147,9 @@ public class OcrSom extends ApplicationAdapter {
 		addLetter.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				letters.getItems().add(new Letter(canvasPixmap, name.getText()));
+				if(sampleDirty)
+					downSample();
+				letters.getItems().add(new Letter(canvasPixmap, samplePixmap, name.getText()));
 				name.setText("");
 			}
 		});
@@ -215,6 +222,16 @@ public class OcrSom extends ApplicationAdapter {
 		sampleTexture.dispose();
 	}
 
+	/** Downsamples {@link #canvasPixmap} and saves the result to {@link #samplePixmap} and {@link #sampleTexture}. Also sets {@link #sampleDirty} to {@code false}. */
+	private void downSample() {
+		Pixmap sampled = DownSample.downSample(canvasPixmap);
+		assert sampled.getWidth() == samplePixmap.getWidth() && sampled.getHeight() == samplePixmap.getHeight();
+		samplePixmap.drawPixmap(sampled, 0, 0);
+		sampleTexture.draw(sampled, 0, 0);
+		sampled.dispose();
+		sampleDirty = false;
+	}
+
 	public void showMessage(String msg) {
 		if(msg != null && !msg.isEmpty()) {
 			//Show this in A console like in TSM project
@@ -224,54 +241,52 @@ public class OcrSom extends ApplicationAdapter {
 
 	//Logic Methods
 	private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
-		int inputCount = (Options.getDownsampleWidth() * Options.getDownsampleHeight());
-		int outputCount = letters.getItems().size;
+        int inputCount = (Options.getDownsampleWidth() * Options.getDownsampleHeight());
+        int outputCount = letters.getItems().size;
 
-		double[][] train = new double[letters.getItems().size][inputCount];
-		//Each Line is a letter representation in pixel
-		//Each Column is a pixel
-		for(int i = 0; i < letters.getItems().size; i++) {
-			Pixmap letterSample = letters.getItems().get(i).getSample();
-			Pixmap downSampled = DownSample.downSample(letterSample);
-			int index = 0;
-			for(int x = 0; x < downSampled.getWidth(); x++) {
-				for(int y = 0; y < downSampled.getHeight(); y++) {
-					int pixel = downSampled.getPixel(x, y);
-					train[i][index] = pixel;
-					index++;
-				}
-			}
+        double[][] train = new double[letters.getItems().size][inputCount];
+        //Each Line is a letter representation in pixel
+        //Each Column is a pixel
+        Pixmap downSampled;
+        for (int i = 0; i < letters.getItems().size; i++) {
+            downSampled = letters.getItems().get(i).getDownSample();
+            for (int x = 0, index = 0; x < downSampled.getWidth(); x++) {
+                for (int y = 0; y < downSampled.getHeight(); y++) {
+                    int pixel = downSampled.getPixel(x, y);
+                    train[i][index] = pixel;
+                    index++;
+                }
+            }
 
-		}
+        }
 
-		logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
-	}
+        logic.start(inputCount, outputCount, normalizationType, train, learningMethod, learnRate);
+    }
 
 	//Recognize Methods
 	//Returns the Recognize Letter
-	public String recognizeLetter(Pixmap letterDrawnImage) {
-		Pixmap downSampled = DownSample.downSample(letterDrawnImage);
+    public String recognizeLetter(Pixmap letterDrawnImage) {
+        Pixmap downSampled = DownSample.downSample(letterDrawnImage);
 
-		double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
-		int index = 0;
-		for(int x = 0; x < downSampled.getWidth(); x++) {
-			for(int y = 0; y < downSampled.getHeight(); y++) {
-				int pixel = downSampled.getPixel(x, y);
-				input[index] = pixel;
-				index++;
-			}
-		}
+        double input[] = new double[downSampled.getWidth() * downSampled.getHeight()];
+        int index = 0;
+        for (int x = 0; x < downSampled.getWidth(); x++) {
+            for (int y = 0; y < downSampled.getHeight(); y++) {
+                int pixel = downSampled.getPixel(x, y);
+                input[index] = pixel;
+                index++;
+            }
+        }
 
-		int winner = logic.getSom().winner(input);
+        int winner = logic.getSom().winner(input);
 
-		for(int i = 0; i < logic.getMap().size(); i++) {
-			if(logic.getMap().get(i).getWinnerNeuronIndex() == winner) {
+        for (int i = 0; i < logic.getMap().size(); i++) {
+            if (logic.getMap().get(i).getWinnerNeuronIndex() == winner)
 				return logic.getMap().get(i).getLetter();
-			}
-		}
+        }
 
-		return "?";
-	}
+        return "?";
+    }
 
 	// getters and setters
 
