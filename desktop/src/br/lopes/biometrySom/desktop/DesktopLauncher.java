@@ -8,11 +8,12 @@ public class DesktopLauncher {
 
     public static void main(String[] arg) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "OCR With Self Organizing Map";
+        cfg.title = "OCR with Kohonen Map";
         cfg.width = 410;
         cfg.height = 630;
 
-        new LwjglApplication(new OcrSom(), cfg);
+        LwjglApplication lwjglApplication = new LwjglApplication(new OcrSom(), cfg);
+
     }
 
 }
