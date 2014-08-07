@@ -12,8 +12,9 @@ public class Letter implements Disposable {
     public Letter(Pixmap sample, Pixmap downSample, String name) {
         this.sample = new Pixmap(sample.getWidth(), sample.getHeight(), sample.getFormat());
         this.sample.drawPixmap(sample, 0, 0);
+        this.downSample = new Pixmap(downSample.getWidth(), downSample.getHeight(), downSample.getFormat());
+		this.downSample.drawPixmap(downSample, 0, 0);
         this.name = name;
-        this.downSample = downSample;
     }
 
     /**
@@ -22,6 +23,7 @@ public class Letter implements Disposable {
     @Override
     public void dispose() {
         sample.dispose();
+		downSample.dispose();
     }
 
     // getters and setters
