@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -92,60 +93,63 @@ public class OcrSom extends ApplicationAdapter {
         Label trainToolTipLabel = new Label("Train The Kohonen Map", skin);
         trainToolTipLabel.setColor(tooltipColor);
         Tooltip trainToolTip = new Tooltip(trainToolTipLabel);
+        trainToolTip.setShowTouchable(Touchable.disabled);
         train.addListener(trainToolTip);
 
         //AddLetter
         Label addLetterToolTipLabel = new Label("Add letter to be trained", skin);
         addLetterToolTipLabel.setColor(tooltipColor);
         Tooltip addLetterToolTip = new Tooltip(addLetterToolTipLabel);
+        addLetterToolTip.setShowTouchable(Touchable.disabled);
         addLetter.addListener(addLetterToolTip);
 
         //Recognize
         Label recognizeToolTipLabel = new Label("Recognize the letter drawn", skin);
         recognizeToolTipLabel.setColor(tooltipColor);
         Tooltip recognizeToolTip = new Tooltip(recognizeToolTipLabel);
+        recognizeToolTip.setShowTouchable(Touchable.disabled);
         recognize.addListener(recognizeToolTip);
 
         //Delete
         Label deleteToolTipLabel = new Label("Delete the selected letter", skin);
         deleteToolTipLabel.setColor(tooltipColor);
         Tooltip deleteToolTip = new Tooltip(deleteToolTipLabel);
+        deleteToolTip.setShowTouchable(Touchable.disabled);
         delete.addListener(deleteToolTip);
 
         //Downsample
         Label downsampleToolTipLabel = new Label("Downsample the letter", skin);
         downsampleToolTipLabel.setColor(tooltipColor);
         Tooltip downsampleToolTip = new Tooltip(downsampleToolTipLabel);
+        downsampleToolTip.setShowTouchable(Touchable.disabled);
         downsample.addListener(downsampleToolTip);
 
         //Downsample
         Label lettersToolTipLabel = new Label("Array of letters to be trained", skin);
         lettersToolTipLabel.setColor(tooltipColor);
         Tooltip lettersToolTip = new Tooltip(lettersToolTipLabel);
+        lettersToolTip.setShowTouchable(Touchable.disabled);
         letters.addListener(lettersToolTip);
-
-        //Canvas
-        Label canvasToolTipLabel = new Label("Draw letter in this canvas", skin);
-        canvasToolTipLabel.setColor(tooltipColor);
-        Tooltip canvasToolTip = new Tooltip(canvasToolTipLabel);
-        canvas.addListener(canvasToolTip);
 
         //Options
         Label optionsToolTipLabel = new Label("SOM-Algorithm Options", skin);
         optionsToolTipLabel.setColor(tooltipColor);
         Tooltip optionsToolTip = new Tooltip(optionsToolTipLabel);
+        optionsToolTip.setShowTouchable(Touchable.disabled);
         options.addListener(optionsToolTip);
 
         //Name
         Label nameToolTipLabel = new Label("Insert letter which was drawn", skin);
         nameToolTipLabel.setColor(tooltipColor);
         Tooltip nameToolTip = new Tooltip(nameToolTipLabel);
+        nameToolTip.setShowTouchable(Touchable.disabled);
         name.addListener(nameToolTip);
 
         //Clear
         Label clearToolTipLabel = new Label("Clear the canvas", skin);
         clearToolTipLabel.setColor(tooltipColor);
         Tooltip clearToolTip = new Tooltip(clearToolTipLabel);
+        clearToolTip.setShowTouchable(Touchable.disabled);
         clear.addListener(clearToolTip);
 
 //Add Listeners
