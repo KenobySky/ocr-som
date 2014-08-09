@@ -1,6 +1,6 @@
-package br.lopes.biometrySom.desktop;
+package br.lopes.ocrSom.desktop;
 
-import br.lopes.biometrySom.OcrSom;
+import br.lopes.ocrSom.OcrSom;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 

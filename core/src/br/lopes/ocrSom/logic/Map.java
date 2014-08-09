@@ -1,4 +1,4 @@
-package br.lopes.biometrySom.logic;
+package br.lopes.ocrSom.logic;
 
 public class Map {
 

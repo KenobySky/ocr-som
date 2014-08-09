@@ -1,7 +1,7 @@
-package br.lopes.biometrySom.android;
+package br.lopes.ocrSom.android;
 
 import android.os.Bundle;
-import br.lopes.biometrySom.OcrSom;
+import br.lopes.ocrSom.OcrSom;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 

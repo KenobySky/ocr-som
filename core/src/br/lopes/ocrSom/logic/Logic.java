@@ -1,9 +1,9 @@
-package br.lopes.biometrySom.logic;
+package br.lopes.ocrSom.logic;
 
 import java.util.ArrayList;
 
-import br.lopes.biometrySom.OcrSom;
-import br.lopes.biometrySom.Options;
+import br.lopes.ocrSom.OcrSom;
+import br.lopes.ocrSom.Options;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput;
 import com.heatonresearch.book.jeffheatoncode.som.SelfOrganizingMap;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap;

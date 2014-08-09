@@ -1,9 +1,9 @@
-package br.lopes.biometrySom.logic;
+package br.lopes.ocrSom.logic;
 
 import java.util.ArrayList;
 
-import br.lopes.biometrySom.Options;
-import br.lopes.biometrySom.images.Letter;
+import br.lopes.ocrSom.Options;
+import br.lopes.ocrSom.images.Letter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;

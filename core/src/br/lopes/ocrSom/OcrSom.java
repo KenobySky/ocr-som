@@ -1,9 +1,9 @@
-package br.lopes.biometrySom;
+package br.lopes.ocrSom;
 
-import br.lopes.biometrySom.Options.OptionsGUI;
-import br.lopes.biometrySom.images.DownSample;
-import br.lopes.biometrySom.images.Letter;
-import br.lopes.biometrySom.logic.Logic;
+import br.lopes.ocrSom.Options.OptionsGUI;
+import br.lopes.ocrSom.images.DownSample;
+import br.lopes.ocrSom.images.Letter;
+import br.lopes.ocrSom.logic.Logic;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

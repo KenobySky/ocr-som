@@ -1,9 +1,9 @@
-package br.lopes.biometrySom.client;
+package br.lopes.ocrSom.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import br.lopes.biometrySom.BiometrySom;
+import br.lopes.ocrSom.BiometrySom;
 
 public class HtmlLauncher extends GwtApplication {
 
