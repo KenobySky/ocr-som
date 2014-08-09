@@ -91,6 +91,7 @@ public class OcrSom extends ApplicationAdapter {
         Color tooltipColor = Color.WHITE;
         Label trainToolTipLabel = new Label("Train The Kohonen Map", skin);
         trainToolTipLabel.setColor(tooltipColor);
+		trainToolTipLabel.setVisible(false);
 		stage.addActor(trainToolTipLabel);
         Tooltip trainToolTip = new Tooltip<>(trainToolTipLabel);
         train.addListener(trainToolTip);
@@ -98,6 +99,7 @@ public class OcrSom extends ApplicationAdapter {
         //AddLetter
         Label addLetterToolTipLabel = new Label("Add letter to be trained", skin);
         addLetterToolTipLabel.setColor(tooltipColor);
+		addLetterToolTipLabel.setVisible(false);
 		stage.addActor(addLetterToolTipLabel);
         Tooltip addLetterToolTip = new Tooltip<>(addLetterToolTipLabel);
         addLetter.addListener(addLetterToolTip);
@@ -105,6 +107,7 @@ public class OcrSom extends ApplicationAdapter {
         //Recognize
         Label recognizeToolTipLabel = new Label("Recognize the letter drawn", skin);
         recognizeToolTipLabel.setColor(tooltipColor);
+		recognizeToolTipLabel.setVisible(false);
 		stage.addActor(recognizeToolTipLabel);
         Tooltip recognizeToolTip = new Tooltip<>(recognizeToolTipLabel);
         recognize.addListener(recognizeToolTip);
@@ -112,6 +115,7 @@ public class OcrSom extends ApplicationAdapter {
         //Delete
         Label deleteToolTipLabel = new Label("Delete the selected letter", skin);
         deleteToolTipLabel.setColor(tooltipColor);
+		deleteToolTipLabel.setVisible(false);
 		stage.addActor(deleteToolTipLabel);
         Tooltip deleteToolTip = new Tooltip<>(deleteToolTipLabel);
         delete.addListener(deleteToolTip);
@@ -119,6 +123,7 @@ public class OcrSom extends ApplicationAdapter {
         //Downsample
         Label downsampleToolTipLabel = new Label("Downsample the letter", skin);
         downsampleToolTipLabel.setColor(tooltipColor);
+		downsampleToolTipLabel.setVisible(false);
 		stage.addActor(downsampleToolTipLabel);
         Tooltip downsampleToolTip = new Tooltip<>(downsampleToolTipLabel);
         downsample.addListener(downsampleToolTip);
@@ -126,6 +131,7 @@ public class OcrSom extends ApplicationAdapter {
         //Downsample
         Label lettersToolTipLabel = new Label("Array of letters to be trained", skin);
         lettersToolTipLabel.setColor(tooltipColor);
+		lettersToolTipLabel.setVisible(false);
 		stage.addActor(lettersToolTipLabel);
         Tooltip lettersToolTip = new Tooltip<>(lettersToolTipLabel);
         letters.addListener(lettersToolTip);
@@ -133,6 +139,7 @@ public class OcrSom extends ApplicationAdapter {
         //Options
         Label optionsToolTipLabel = new Label("SOM-Algorithm Options", skin);
         optionsToolTipLabel.setColor(tooltipColor);
+		optionsToolTipLabel.setVisible(false);
 		stage.addActor(optionsToolTipLabel);
         Tooltip optionsToolTip = new Tooltip<>(optionsToolTipLabel);
         options.addListener(optionsToolTip);
@@ -140,6 +147,7 @@ public class OcrSom extends ApplicationAdapter {
         //Name
         Label nameToolTipLabel = new Label("Insert letter which was drawn", skin);
         nameToolTipLabel.setColor(tooltipColor);
+		nameToolTipLabel.setVisible(false);
 		stage.addActor(nameToolTipLabel);
         Tooltip nameToolTip = new Tooltip<>(nameToolTipLabel);
         name.addListener(nameToolTip);
@@ -147,6 +155,7 @@ public class OcrSom extends ApplicationAdapter {
         //Clear
         Label clearToolTipLabel = new Label("Clear the canvas", skin);
         clearToolTipLabel.setColor(tooltipColor);
+		clearToolTipLabel.setVisible(false);
 		stage.addActor(clearToolTipLabel);
         Tooltip clearToolTip = new Tooltip<>(clearToolTipLabel);
         clear.addListener(clearToolTip);
