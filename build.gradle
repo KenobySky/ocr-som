@@ -19,8 +19,8 @@ allprojects {
 	ext {
 		appName = 'biometry-som'
 		gdxVersion = '1.2.1-SNAPSHOT'
-		libgdxUtilsVersion = '0.3.5-SNAPSHOT'
-		roboVMVersion = '0.0.13'
+		gdxUtilsVersion = '0.4.0-SNAPSHOT'
+		roboVMVersion = '0.0.14'
 	}
 
 	repositories {
@@ -35,7 +35,7 @@ project(':core') {
 
 	dependencies {
 		compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-		compile "net.dermetfan.libgdx-utils:libgdx-utils:$libgdxUtilsVersion"
+		compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion"
 	}
 }
 
@@ -73,9 +73,9 @@ project(':html') {
 		compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
 		compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 		compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+		compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion:sources"
 	}
 }
-
 
 tasks.eclipse.doLast {
 	delete '.project'
