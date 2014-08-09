@@ -9,11 +9,9 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "OCR with Kohonen Map";
-        cfg.width = 410;
-        cfg.height = 630;
-
-        LwjglApplication lwjglApplication = new LwjglApplication(new OcrSom(), cfg);
-
+        cfg.width = 405;
+        cfg.height = 670;
+        new LwjglApplication(new OcrSom(), cfg);
     }
 
 }
