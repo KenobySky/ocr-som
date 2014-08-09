@@ -91,54 +91,63 @@ public class OcrSom extends ApplicationAdapter {
         Color tooltipColor = Color.WHITE;
         Label trainToolTipLabel = new Label("Train The Kohonen Map", skin);
         trainToolTipLabel.setColor(tooltipColor);
+		stage.addActor(trainToolTipLabel);
         Tooltip trainToolTip = new Tooltip<>(trainToolTipLabel);
         train.addListener(trainToolTip);
 
         //AddLetter
         Label addLetterToolTipLabel = new Label("Add letter to be trained", skin);
         addLetterToolTipLabel.setColor(tooltipColor);
+		stage.addActor(addLetterToolTipLabel);
         Tooltip addLetterToolTip = new Tooltip<>(addLetterToolTipLabel);
         addLetter.addListener(addLetterToolTip);
 
         //Recognize
         Label recognizeToolTipLabel = new Label("Recognize the letter drawn", skin);
         recognizeToolTipLabel.setColor(tooltipColor);
+		stage.addActor(recognizeToolTipLabel);
         Tooltip recognizeToolTip = new Tooltip<>(recognizeToolTipLabel);
         recognize.addListener(recognizeToolTip);
 
         //Delete
         Label deleteToolTipLabel = new Label("Delete the selected letter", skin);
         deleteToolTipLabel.setColor(tooltipColor);
+		stage.addActor(deleteToolTipLabel);
         Tooltip deleteToolTip = new Tooltip<>(deleteToolTipLabel);
         delete.addListener(deleteToolTip);
 
         //Downsample
         Label downsampleToolTipLabel = new Label("Downsample the letter", skin);
         downsampleToolTipLabel.setColor(tooltipColor);
+		stage.addActor(downsampleToolTipLabel);
         Tooltip downsampleToolTip = new Tooltip<>(downsampleToolTipLabel);
         downsample.addListener(downsampleToolTip);
 
         //Downsample
         Label lettersToolTipLabel = new Label("Array of letters to be trained", skin);
         lettersToolTipLabel.setColor(tooltipColor);
+		stage.addActor(lettersToolTipLabel);
         Tooltip lettersToolTip = new Tooltip<>(lettersToolTipLabel);
         letters.addListener(lettersToolTip);
 
         //Options
         Label optionsToolTipLabel = new Label("SOM-Algorithm Options", skin);
         optionsToolTipLabel.setColor(tooltipColor);
+		stage.addActor(optionsToolTipLabel);
         Tooltip optionsToolTip = new Tooltip<>(optionsToolTipLabel);
         options.addListener(optionsToolTip);
 
         //Name
         Label nameToolTipLabel = new Label("Insert letter which was drawn", skin);
         nameToolTipLabel.setColor(tooltipColor);
+		stage.addActor(nameToolTipLabel);
         Tooltip nameToolTip = new Tooltip<>(nameToolTipLabel);
         name.addListener(nameToolTip);
 
         //Clear
         Label clearToolTipLabel = new Label("Clear the canvas", skin);
         clearToolTipLabel.setColor(tooltipColor);
+		stage.addActor(clearToolTipLabel);
         Tooltip clearToolTip = new Tooltip<>(clearToolTipLabel);
         clear.addListener(clearToolTip);
 
