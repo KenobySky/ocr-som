@@ -36,7 +36,6 @@ import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap.Learnin
 import net.dermetfan.gdx.math.GeometryUtils;
 import net.dermetfan.gdx.scenes.scene2d.ui.Tooltip;
 
-
 public class OcrSom extends ApplicationAdapter {
 
     private Logic logic = new Logic(this);
@@ -208,7 +207,7 @@ public class OcrSom extends ApplicationAdapter {
                 window.pack();
                 
                 
-                window.setPosition(stage.getWidth() / 2,  stage.getHeight() / 2, Align.center);
+                window.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, Align.center);
                 //window.setCenterPosition(stage.getWidth() / 2, stage.getHeight() / 2);
                 
                 close.addListener(new ClickListener() {

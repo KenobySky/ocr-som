@@ -6,7 +6,7 @@ buildscript {
 	}
 	dependencies {
 		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
-		classpath 'com.android.tools.build:gradle:0.10+'
+		classpath 'com.android.tools.build:gradle:0.12+'
 		classpath 'de.undercouch:gradle-download-task:+'
 	}
 }
@@ -18,9 +18,8 @@ allprojects {
 	version = '1.0'
 	ext {
 		appName = 'biometry-som'
-		gdxVersion = '1.2.1-SNAPSHOT'
-		gdxUtilsVersion = '0.4.0-SNAPSHOT'
-			libgdxUtilsVersion = '0.5.0'
+		gdxVersion = '1.3.2-SNAPSHOT'
+		gdxUtilsVersion = '0.5.0'
 		roboVMVersion = '0.0.14'
 	}
 
@@ -36,7 +35,7 @@ project(':core') {
 
 	dependencies {
 		compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-		compile "net.dermetfan.libgdx-utils:libgdx-utils:$libgdxUtilsVersion"
+		compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion"
 	}
 }
 

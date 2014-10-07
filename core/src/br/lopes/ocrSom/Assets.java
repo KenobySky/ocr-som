@@ -4,8 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 import net.dermetfan.gdx.assets.AnnotationAssetManager.Asset;
 
-
-
 public abstract class Assets {
 
     public static final AnnotationAssetManager manager = new AnnotationAssetManager();
