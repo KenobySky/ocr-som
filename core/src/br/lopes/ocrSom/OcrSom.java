@@ -26,14 +26,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput.NormalizationType;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap.LearningMethod;
-import net.dermetfan.utils.libgdx.math.GeometryUtils;
-import net.dermetfan.utils.libgdx.scene2d.ui.Tooltip;
+import net.dermetfan.gdx.math.GeometryUtils;
+import net.dermetfan.gdx.scenes.scene2d.ui.Tooltip;
+
 
 public class OcrSom extends ApplicationAdapter {
 
@@ -204,7 +206,11 @@ public class OcrSom extends ApplicationAdapter {
                 window.add(new OptionsGUI()).fill().row();
                 window.add(close).fill();
                 window.pack();
-                window.setCenterPosition(stage.getWidth() / 2, stage.getHeight() / 2);
+                
+                
+                window.setPosition(stage.getWidth() / 2,  stage.getHeight() / 2, Align.center);
+                //window.setCenterPosition(stage.getWidth() / 2, stage.getHeight() / 2);
+                
                 close.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {

@@ -20,6 +20,7 @@ allprojects {
 		appName = 'biometry-som'
 		gdxVersion = '1.2.1-SNAPSHOT'
 		gdxUtilsVersion = '0.4.0-SNAPSHOT'
+			libgdxUtilsVersion = '0.5.0'
 		roboVMVersion = '0.0.14'
 	}
 
@@ -35,7 +36,7 @@ project(':core') {
 
 	dependencies {
 		compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-		compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion"
+		compile "net.dermetfan.libgdx-utils:libgdx-utils:$libgdxUtilsVersion"
 	}
 }
 
