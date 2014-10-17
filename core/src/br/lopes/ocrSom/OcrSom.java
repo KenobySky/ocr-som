@@ -42,7 +42,7 @@ public class OcrSom extends ApplicationAdapter {
 
     private Stage stage;
     private Pixmap canvasPixmap, samplePixmap;
-    private Texture canvasTexture, sampleTexture;
+    private TextureRegion canvasTextureRegion, sampleTextureRegion;
     private TextField name;
     private List<Letter> letters;
     private Label log;
@@ -66,16 +66,18 @@ public class OcrSom extends ApplicationAdapter {
         Gdx.input.setInputProcessor(stage);
 
         log = new Label("", skin);
+
         canvasPixmap = new Pixmap(400, 400, Format.RGBA8888);
         canvasPixmap.setColor(Color.WHITE);
         canvasPixmap.fill();
         canvasPixmap.setColor(Color.BLACK); // for drawing
-        canvasTexture = new Texture(canvasPixmap);
         samplePixmap = new Pixmap(Options.getDownsampleWidth(), Options.getDownsampleHeight(), Format.RGBA8888);
-        sampleTexture = new Texture(samplePixmap);
 
-        final Image canvas = new Image(new TextureRegionDrawable(new TextureRegion(canvasTexture)));
-        final Image sample = new Image(new TextureRegionDrawable(new TextureRegion(sampleTexture)));
+        canvasTextureRegion = new TextureRegion(new Texture(canvasPixmap));
+        sampleTextureRegion = new TextureRegion(new Texture(samplePixmap));
+
+        final Image canvas = new Image(new TextureRegionDrawable(canvasTextureRegion));
+        final Image sample = new Image(new TextureRegionDrawable(sampleTextureRegion));
 
         Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin), options = new TextButton("Options", skin);
         name = new TextField("", skin);
@@ -162,7 +164,7 @@ public class OcrSom extends ApplicationAdapter {
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 y = GeometryUtils.invertAxis(y, canvas.getHeight());
                 canvasPixmap.fillCircle((int) x, (int) y, 20);
-                canvasTexture.draw(canvasPixmap, 0, 0);
+                canvasTextureRegion.getTexture().draw(canvasPixmap, 0, 0);
                 sampleDirty = true;
             }
         });
@@ -179,7 +181,7 @@ public class OcrSom extends ApplicationAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 canvasPixmap.setColor(Color.WHITE);
                 canvasPixmap.fill();
-                canvasTexture.draw(canvasPixmap, 0, 0);
+                canvasTextureRegion.getTexture().draw(canvasPixmap, 0, 0);
                 canvasPixmap.setColor(Color.BLACK);
                 sampleDirty = true;
             }
@@ -266,7 +268,7 @@ public class OcrSom extends ApplicationAdapter {
                 if (index != -1) {
                     Pixmap selectedSample = letters.getItems().get(index).getSample();
                     canvasPixmap.drawPixmap(selectedSample, 0, 0);
-                    canvasTexture.draw(canvasPixmap, 0, 0);
+                    canvasTextureRegion.getTexture().draw(canvasPixmap, 0, 0);
                 }
             }
         });
@@ -309,6 +311,12 @@ public class OcrSom extends ApplicationAdapter {
     }
 
     @Override
+    public void resume() {
+        canvasTextureRegion.setTexture(new Texture(canvasPixmap));
+        sampleTextureRegion.setTexture(new Texture(samplePixmap));
+    }
+
+    @Override
     public void dispose() {
         try {
             Assets.manager.dispose();
@@ -317,20 +325,21 @@ public class OcrSom extends ApplicationAdapter {
         }
         stage.dispose();
         canvasPixmap.dispose();
-        canvasTexture.dispose();
-        sampleTexture.dispose();
+        canvasTextureRegion.getTexture().dispose();
+        samplePixmap.dispose();
+        sampleTextureRegion.getTexture().dispose();
     }
 
     /**
      * Downsamples {@link #canvasPixmap} and saves the result to
-     * {@link #samplePixmap} and {@link #sampleTexture}. Also sets
+     * {@link #samplePixmap} and {@link #sampleTextureRegion}. Also sets
      * {@link #sampleDirty} to {@code false}.
      */
     private void downSample() {
         Pixmap sampled = DownSample.downSample(canvasPixmap);
         assert sampled.getWidth() == samplePixmap.getWidth() && sampled.getHeight() == samplePixmap.getHeight();
         samplePixmap.drawPixmap(sampled, 0, 0);
-        sampleTexture.draw(sampled, 0, 0);
+        sampleTextureRegion.getTexture().draw(sampled, 0, 0);
         sampled.dispose();
         sampleDirty = false;
     }

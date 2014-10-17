@@ -18,7 +18,7 @@ public class Letter implements Disposable {
 	}
 
 	/**
-	 * disposes the {@link #sample}
+	 * disposes the {@link #sample} and {@link #downSample}
 	 */
 	@Override
 	public void dispose() {
