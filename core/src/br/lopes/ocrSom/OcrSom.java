@@ -221,6 +221,7 @@ public class OcrSom extends ApplicationAdapter {
         train.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                showMessage("Training...");
                 startTrain(Options.getNormalizeInput(), Options.getTrainLearningMethod(), Options.getLearnRate());
             }
         });
@@ -350,7 +351,7 @@ public class OcrSom extends ApplicationAdapter {
     //Logic Methods
     private void startTrain(NormalizationType normalizationType, LearningMethod learningMethod, float learnRate) {
         if (letters.getItems().size == 0) {
-            showMessage("Invalid Training,no Letters to Train!");
+            showMessage("No letters to train!");
             return;
         }
 
@@ -404,7 +405,7 @@ public class OcrSom extends ApplicationAdapter {
             }
         }
 
-        return "Couldnt recognize! *Unknown*";
+        return "Couldn't recognize! *Unknown*";
     }
 
     // getters and setters
