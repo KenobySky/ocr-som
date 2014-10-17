@@ -89,73 +89,63 @@ public class OcrSom extends ApplicationAdapter {
          * Add ToolTips
          */
         //TrainButton ToolTip
-        Color tooltipColor = Color.WHITE;
-        Label trainToolTipLabel = new Label("Train The Kohonen Map", skin);
-        trainToolTipLabel.setColor(tooltipColor);
+        Label trainToolTipLabel = new Label("Train The Kohonen Map", skin, "default");
 		trainToolTipLabel.setVisible(false);
 		stage.addActor(trainToolTipLabel);
         Tooltip trainToolTip = new Tooltip<>(trainToolTipLabel);
         train.addListener(trainToolTip);
 
         //AddLetter
-        Label addLetterToolTipLabel = new Label("Add letter to be trained", skin);
-        addLetterToolTipLabel.setColor(tooltipColor);
+        Label addLetterToolTipLabel = new Label("Add letter to be trained", skin, "tooltip");
 		addLetterToolTipLabel.setVisible(false);
 		stage.addActor(addLetterToolTipLabel);
         Tooltip addLetterToolTip = new Tooltip<>(addLetterToolTipLabel);
         addLetter.addListener(addLetterToolTip);
 
         //Recognize
-        Label recognizeToolTipLabel = new Label("Recognize the letter drawn", skin);
-        recognizeToolTipLabel.setColor(tooltipColor);
+        Label recognizeToolTipLabel = new Label("Recognize the letter drawn", skin, "tooltip");
 		recognizeToolTipLabel.setVisible(false);
 		stage.addActor(recognizeToolTipLabel);
         Tooltip recognizeToolTip = new Tooltip<>(recognizeToolTipLabel);
         recognize.addListener(recognizeToolTip);
 
         //Delete
-        Label deleteToolTipLabel = new Label("Delete the selected letter", skin);
-        deleteToolTipLabel.setColor(tooltipColor);
+        Label deleteToolTipLabel = new Label("Delete the selected letter", skin, "tooltip");
 		deleteToolTipLabel.setVisible(false);
 		stage.addActor(deleteToolTipLabel);
         Tooltip deleteToolTip = new Tooltip<>(deleteToolTipLabel);
         delete.addListener(deleteToolTip);
 
         //Downsample
-        Label downsampleToolTipLabel = new Label("Downsample the letter", skin);
-        downsampleToolTipLabel.setColor(tooltipColor);
+        Label downsampleToolTipLabel = new Label("Downsample the letter", skin, "tooltip");
 		downsampleToolTipLabel.setVisible(false);
 		stage.addActor(downsampleToolTipLabel);
         Tooltip downsampleToolTip = new Tooltip<>(downsampleToolTipLabel);
         downsample.addListener(downsampleToolTip);
 
         //Downsample
-        Label lettersToolTipLabel = new Label("Array of letters to be trained", skin);
-        lettersToolTipLabel.setColor(tooltipColor);
+        Label lettersToolTipLabel = new Label("Array of letters to be trained", skin, "tooltip");
 		lettersToolTipLabel.setVisible(false);
 		stage.addActor(lettersToolTipLabel);
         Tooltip lettersToolTip = new Tooltip<>(lettersToolTipLabel);
         letters.addListener(lettersToolTip);
 
         //Options
-        Label optionsToolTipLabel = new Label("SOM-Algorithm Options", skin);
-        optionsToolTipLabel.setColor(tooltipColor);
+        Label optionsToolTipLabel = new Label("SOM-Algorithm Options", skin, "tooltip");
 		optionsToolTipLabel.setVisible(false);
 		stage.addActor(optionsToolTipLabel);
         Tooltip optionsToolTip = new Tooltip<>(optionsToolTipLabel);
         options.addListener(optionsToolTip);
 
         //Name
-        Label nameToolTipLabel = new Label("Insert letter which was drawn", skin);
-        nameToolTipLabel.setColor(tooltipColor);
+        Label nameToolTipLabel = new Label("Insert letter which was drawn", skin, "tooltip");
 		nameToolTipLabel.setVisible(false);
 		stage.addActor(nameToolTipLabel);
         Tooltip nameToolTip = new Tooltip<>(nameToolTipLabel);
         name.addListener(nameToolTip);
 
         //Clear
-        Label clearToolTipLabel = new Label("Clear the canvas", skin);
-        clearToolTipLabel.setColor(tooltipColor);
+        Label clearToolTipLabel = new Label("Clear the canvas", skin, "tooltip");
 		clearToolTipLabel.setVisible(false);
 		stage.addActor(clearToolTipLabel);
         Tooltip clearToolTip = new Tooltip<>(clearToolTipLabel);
