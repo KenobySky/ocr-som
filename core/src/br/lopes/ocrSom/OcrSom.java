@@ -89,7 +89,7 @@ public class OcrSom extends ApplicationAdapter {
          * Add ToolTips
          */
         //TrainButton ToolTip
-        Label trainToolTipLabel = new Label("Train The Kohonen Map", skin, "default");
+        Label trainToolTipLabel = new Label("Train The Kohonen Map", skin, "tooltip");
 		trainToolTipLabel.setVisible(false);
 		stage.addActor(trainToolTipLabel);
         Tooltip trainToolTip = new Tooltip<>(trainToolTipLabel);
