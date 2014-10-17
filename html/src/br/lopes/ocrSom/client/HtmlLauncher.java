@@ -1,9 +1,9 @@
 package br.lopes.ocrSom.client;
 
+import br.lopes.ocrSom.OcrSom;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import br.lopes.ocrSom.BiometrySom;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +14,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new BiometrySom();
+                return new OcrSom();
         }
 }

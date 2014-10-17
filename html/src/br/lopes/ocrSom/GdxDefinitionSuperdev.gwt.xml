@@ -3,7 +3,7 @@
 <module rename-to="html">
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
-    <inherits name='BiometrySom' />
+    <inherits name='OcrSom' />
 	<entry-point class='br.lopes.ocrSom.client.HtmlLauncher' />
 	
 	<add-linker name="xsiframe"/>
