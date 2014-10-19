@@ -1,4 +1,4 @@
-# README #
+## **Optical Character Recognition using Kohonen Map , also known as self-organizing map (SOM).** ##
 
 This repository is about **Optical Character Recognition using Kohonen Map , also known as self-organizing map (SOM).**
 
