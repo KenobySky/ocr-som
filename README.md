@@ -7,19 +7,20 @@ According to Kohonen (1990, p.1) "...The Self-Organizing map has the special pro
 
 This project objective is to use the OCR with SOM project from the book and improve it to make it more didactic  for students.And also able to run on android.
 
-Picture 1 : Main Screen
 
+Picture 1 : Main Screen
 ![mainscreen.png](https://bitbucket.org/repo/kn7Knb/images/2415062879-mainscreen.png)
 
 
-Picture 2: Adding Letter to the program
 
+Picture 2: Adding Letter to the program
 ![AddLetter A.png](https://bitbucket.org/repo/kn7Knb/images/3307402607-AddLetter%20A.png)
 
 
-Picture 3: Neural Network (SOM) Trained 
 
+Picture 3: Neural Network (SOM) Trained 
 ![Trained.png](https://bitbucket.org/repo/kn7Knb/images/2680595927-Trained.png)
+
 
 
 Picture 4: Recognizing letter X
