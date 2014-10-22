@@ -9,21 +9,25 @@ This project objective is to use the OCR with SOM project from the book and impr
 
 
 Picture 1 : Main Screen
+
 ![mainscreen.png](https://bitbucket.org/repo/kn7Knb/images/2415062879-mainscreen.png)
 
 
 
 Picture 2: Adding Letter to the program
+
 ![AddLetter A.png](https://bitbucket.org/repo/kn7Knb/images/3307402607-AddLetter%20A.png)
 
 
 
 Picture 3: Neural Network (SOM) Trained 
+
 ![Trained.png](https://bitbucket.org/repo/kn7Knb/images/2680595927-Trained.png)
 
 
 
 Picture 4: Recognizing letter X
+
 ![RecognizeX.png](https://bitbucket.org/repo/kn7Knb/images/3564849924-RecognizeX.png)
 
 * Quick summary
