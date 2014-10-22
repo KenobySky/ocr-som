@@ -40,8 +40,7 @@ This project is still on alpha version and still under development.
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+Please contact the repository admins : Andre Lopes or Robin Stumm
 
 
 ### References ###
