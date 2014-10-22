@@ -2,8 +2,8 @@
 
 ## This repository is about **Optical Character Recognition using Kohonen Map , also known as self-organizing map (SOM).** ## 
 
-### Project based on :
-Heaton, Jeff. Introduction to neural networks with java,2nd ed. Heaton Research. October,2008. ###
+Project based on :
+*Heaton, Jeff. Introduction to neural networks with java,2nd ed. Heaton Research. October,2008.* 
 
 TODO : http://www.eicstes.org/EICSTES_PDF/PAPERS/The%20Self-Organizing%20Map%20(Kohonen).pdf
 
