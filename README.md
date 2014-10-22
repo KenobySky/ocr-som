@@ -1,6 +1,12 @@
 ## **Optical Character Recognition using Kohonen Map (self-organizing map (SOM)).** ##
 
-This repository is about **Optical Character Recognition using Kohonen Map , also known as self-organizing map (SOM).**
+# This repository is about **Optical Character Recognition using Kohonen Map , also known as self-organizing map (SOM).** #
+
+### Project based on :
+Heaton, Jeff. Introduction to neural networks with java,2nd ed. Heaton Research. October,2008. ###
+
+TODO : http://www.eicstes.org/EICSTES_PDF/PAPERS/The%20Self-Organizing%20Map%20(Kohonen).pdf
+
 
 According to wikipedia: *"A self-organizing map (SOM) or self-organizing feature map (SOFM) is a type of artificial neural network (ANN) that is trained using unsupervised learning to produce a low-dimensional (typically two-dimensional), discretized representation of the input space of the training samples, called a map. Self-organizing maps are different from other artificial neural networks in the sense that they use a neighborhood function to preserve the topological properties of the input space."*
 [http://en.wikipedia.org/wiki/Self-organizing_map](http://en.wikipedia.org/wiki/Self-organizing_map)
