@@ -21,28 +21,13 @@ Picture 3: Neural Network (SOM) Trained | Picture 4: Recognizing letter X
 
 This project is still on alpha version and still under development.
 
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
 ### Who do I talk to? ###
 
 Please contact the repository admins : Andre Lopes or Robin Stumm
 
+
 #SPECIAL THANKS#
+
 JEFF HEATON
 http://www.heatonresearch.com/
 HEATON, JEFF. Introduction to Neural Networks with Java, Second Edition. 2 edition (October 1, 2008). Publish Location: Heaton Research, Inc, October 1, 2008. 440 pages.
