@@ -25,16 +25,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.heatonresearch.book.jeffheatoncode.som.NormalizeInput.NormalizationType;
 import com.heatonresearch.book.jeffheatoncode.som.TrainSelfOrganizingMap.LearningMethod;
 import net.dermetfan.gdx.math.GeometryUtils;
-import net.dermetfan.gdx.scenes.scene2d.ui.Tooltip;
 
 public class OcrSom extends ApplicationAdapter {
 
@@ -87,71 +87,35 @@ public class OcrSom extends ApplicationAdapter {
         Button recognize = new TextButton("Recognize", skin);
         Button delete = new TextButton("Delete", skin);
 
-        /**
+        /*
          * Add ToolTips
          */
         //TrainButton ToolTip
-        Label trainToolTipLabel = new Label("Train The Kohonen Map", skin, "tooltip");
-		trainToolTipLabel.setVisible(false);
-		stage.addActor(trainToolTipLabel);
-        Tooltip trainToolTip = new Tooltip<>(trainToolTipLabel);
-        train.addListener(trainToolTip);
+        train.addListener(new Tooltip<>(new Label("Train The Kohonen Map", skin, "tooltip")));
 
         //AddLetter
-        Label addLetterToolTipLabel = new Label("Add letter to be trained", skin, "tooltip");
-		addLetterToolTipLabel.setVisible(false);
-		stage.addActor(addLetterToolTipLabel);
-        Tooltip addLetterToolTip = new Tooltip<>(addLetterToolTipLabel);
-        addLetter.addListener(addLetterToolTip);
+        addLetter.addListener(new Tooltip<>(new Label("Add letter to be trained", skin, "tooltip")));
 
         //Recognize
-        Label recognizeToolTipLabel = new Label("Recognize the letter drawn", skin, "tooltip");
-		recognizeToolTipLabel.setVisible(false);
-		stage.addActor(recognizeToolTipLabel);
-        Tooltip recognizeToolTip = new Tooltip<>(recognizeToolTipLabel);
-        recognize.addListener(recognizeToolTip);
+        recognize.addListener(new Tooltip<>(new Label("Recognize the letter drawn", skin, "tooltip")));
 
         //Delete
-        Label deleteToolTipLabel = new Label("Delete the selected letter", skin, "tooltip");
-		deleteToolTipLabel.setVisible(false);
-		stage.addActor(deleteToolTipLabel);
-        Tooltip deleteToolTip = new Tooltip<>(deleteToolTipLabel);
-        delete.addListener(deleteToolTip);
+        delete.addListener(new Tooltip<>(new Label("Delete the selected letter", skin, "tooltip")));
 
         //Downsample
-        Label downsampleToolTipLabel = new Label("Downsample the letter", skin, "tooltip");
-		downsampleToolTipLabel.setVisible(false);
-		stage.addActor(downsampleToolTipLabel);
-        Tooltip downsampleToolTip = new Tooltip<>(downsampleToolTipLabel);
-        downsample.addListener(downsampleToolTip);
+        downsample.addListener(new Tooltip<>(new Label("Downsample the letter", skin, "tooltip")));
 
         //Downsample
-        Label lettersToolTipLabel = new Label("Array of letters to be trained", skin, "tooltip");
-		lettersToolTipLabel.setVisible(false);
-		stage.addActor(lettersToolTipLabel);
-        Tooltip lettersToolTip = new Tooltip<>(lettersToolTipLabel);
-        letters.addListener(lettersToolTip);
+        letters.addListener(new Tooltip<>(new Label("Array of letters to be trained", skin, "tooltip")));
 
         //Options
-        Label optionsToolTipLabel = new Label("SOM-Algorithm Options", skin, "tooltip");
-		optionsToolTipLabel.setVisible(false);
-		stage.addActor(optionsToolTipLabel);
-        Tooltip optionsToolTip = new Tooltip<>(optionsToolTipLabel);
-        options.addListener(optionsToolTip);
+        options.addListener(new Tooltip<>(new Label("SOM-Algorithm Options", skin, "tooltip")));
 
         //Name
-        Label nameToolTipLabel = new Label("Insert letter which was drawn", skin, "tooltip");
-		nameToolTipLabel.setVisible(false);
-		stage.addActor(nameToolTipLabel);
-        Tooltip nameToolTip = new Tooltip<>(nameToolTipLabel);
-        name.addListener(nameToolTip);
+        name.addListener(new Tooltip<>(new Label("Insert letter which was drawn", skin, "tooltip")));
 
         //Clear
-        Label clearToolTipLabel = new Label("Clear the canvas", skin, "tooltip");
-		clearToolTipLabel.setVisible(false);
-		stage.addActor(clearToolTipLabel);
-        Tooltip clearToolTip = new Tooltip<>(clearToolTipLabel);
-        clear.addListener(clearToolTip);
+        clear.addListener(new Tooltip<>(new Label("Clear the canvas", skin, "tooltip")));
 
 		//Add Listeners
         canvas.addListener(new InputListener() {
