@@ -47,6 +47,7 @@ public class OcrSom extends ApplicationAdapter {
     private List<Letter> letters;
     private Label log;
     private ScrollPane logPane;
+    private Image sample;
 
     /**
      * Determines if a downsampling is required or not. True if
@@ -77,7 +78,8 @@ public class OcrSom extends ApplicationAdapter {
         sampleTextureRegion = new TextureRegion(new Texture(samplePixmap));
 
         final Image canvas = new Image(new TextureRegionDrawable(canvasTextureRegion));
-        final Image sample = new Image(new TextureRegionDrawable(sampleTextureRegion));
+        sample = new Image(new TextureRegionDrawable(sampleTextureRegion));
+
 
         Button downsample = new TextButton("Downsample", skin), clear = new TextButton("Clear", skin), options = new TextButton("Options", skin);
         name = new TextField("", skin);
@@ -117,7 +119,7 @@ public class OcrSom extends ApplicationAdapter {
         //Clear
         clear.addListener(new Tooltip<>(new Label("Clear the canvas", skin, "tooltip")));
 
-		//Add Listeners
+        //Add Listeners
         canvas.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -161,18 +163,17 @@ public class OcrSom extends ApplicationAdapter {
                 window.add(new OptionsGUI()).fill().row();
                 window.add(close).fill();
                 window.pack();
-                
-                
+
+
                 window.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, Align.center);
                 //window.setCenterPosition(stage.getWidth() / 2, stage.getHeight() / 2);
-                
+
                 close.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        // int oldDSWidth = Options.getDownsampleWidth(), oldDSHeight = Options.getDownsampleHeight();
+
                         window.addAction(Actions.sequence(Actions.fadeOut(.4f), Actions.removeActor()));
-                        // TODO recreate sampleTexture if necessary
-                        // if(Options.getDownsampleWidth() != oldDSWidth || Options.getDownsampleHeight() != oldDSHeight);
+
                     }
                 });
             }
@@ -300,12 +301,25 @@ public class OcrSom extends ApplicationAdapter {
      * {@link #sampleDirty} to {@code false}.
      */
     private void downSample() {
+
+        // Recreate sampleTexture if necessary
+        if (Options.getDownsampleWidth() != samplePixmap.getWidth() || Options.getDownsampleHeight() != samplePixmap.getHeight()) {
+            samplePixmap = new Pixmap(Options.getDownsampleWidth(), Options.getDownsampleHeight(), Format.RGBA8888);
+            sampleTextureRegion.setTexture(new Texture(samplePixmap));
+            sample = new Image(new TextureRegionDrawable(sampleTextureRegion));
+        }
+
         Pixmap sampled = DownSample.downSample(canvasPixmap);
         assert sampled.getWidth() == samplePixmap.getWidth() && sampled.getHeight() == samplePixmap.getHeight();
         samplePixmap.drawPixmap(sampled, 0, 0);
         sampleTextureRegion.getTexture().draw(sampled, 0, 0);
         sampled.dispose();
         sampleDirty = false;
+        System.out.println("sampled.getWidth() " + sampled.getWidth());
+        System.out.println("samplePixmap.getWidth() " + samplePixmap.getWidth());
+
+        System.out.println("sampled.getHeight() " + sampled.getHeight());
+        System.out.println("samplePixmap.getHeight() " + samplePixmap.getHeight());
     }
 
     /**
